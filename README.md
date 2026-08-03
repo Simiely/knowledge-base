@@ -50,6 +50,9 @@ knowledge-base/
 - Blender 面板列表卡 / 需手动刷新 → `解决方案/Blender面板缓存与手动刷新.md`
 - Blender 插件删除物体后撤销报错 → `解决方案/BlenderUNDO与bpy.data引用陷阱.md`
 - Blender 中文名称显示参差 → `解决方案/BlenderCJK字符宽度截断.md`
+- AE 粒子/批量随机错乱 → `解决方案/AE表达式seedRandom种子管理.md`
+- AE 面板控件错位 / 下拉失效 → `解决方案/ScriptUI可见性与控件状态陷阱.md`
+- AE 模糊边缘被裁剪 → `解决方案/AEMask与Effect渲染顺序.md`
 - 想规范单个仓库的文档 → `单项目规范/README.md`
 - 忘记某条经验在哪 → Obsidian 打开本目录全文搜索
 
@@ -74,7 +77,7 @@ knowledge-base/
 
 ## 最近更新
 
-- 2026-08-03 提炼 blender-mesh-face-sorter：新增 3 条 Blender 经验（面板缓存/UNDO 陷阱/CJK 宽度），Blender 板块首建
+- 2026-08-03 提炼 starry-sky-generator：新增 3 条 AE 经验（seedRandom 种子/可见性陷阱/渲染顺序），AE 板块共 7 条
 
 ## 使用建议
 
