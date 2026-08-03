@@ -3,6 +3,7 @@ tags: [ae, es3, javascript]
 date: 2026-08-03
 status: stable
 related: []
+source: https://github.com/Simiely/AE-Lyrics-Animator/blob/main/DEVELOPMENT.md
 ---
 # ExtendScript ES3 语法红线（AE .jsx）
 
@@ -48,3 +49,9 @@ if (typeof JSON.parse !== "function") {
 
 - 写代码时用 `node --check 脚本.jsx` 做语法检查（Node 验证 ES3 语法，不能运行 AE API）
 - 回调、`.map` 等一律用 `function(){}` 匿名函数
+
+## 来源
+
+提炼自 [AE-Lyrics-Animator](https://github.com/Simiely/AE-Lyrics-Animator)（v3.5）：
+- [DEVELOPMENT.md §C2](https://github.com/Simiely/AE-Lyrics-Animator/blob/main/DEVELOPMENT.md)（ExtendScript 无 JSON 对象，polyfill 实现）
+- [AGENTS.md](https://github.com/Simiely/AE-Lyrics-Animator/blob/main/AGENTS.md) 技术栈/关键坑

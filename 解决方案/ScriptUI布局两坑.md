@@ -3,6 +3,7 @@ tags: [ae, scriptui, ui]
 date: 2026-08-03
 status: stable
 related: []
+source: https://github.com/Simiely/AE-Lyrics-Animator/blob/main/DEVELOPMENT.md
 ---
 # ScriptUI 布局两坑
 
@@ -33,3 +34,9 @@ edittext.alignment = ["fill", "center"];
 - 写布局前先明确每个控件的对齐需求，fill 用双轴数组形式
 - 面板宽度问题优先查控件布局，而不是调 preferredSize
 - 多个 fill 叠加会导致宽度失控（如 `alignChildren="fill"` + 控件 `alignment="fill"` 双重重叠），布局写完检查 fill 层级
+
+## 来源
+
+提炼自 [AE-Lyrics-Animator](https://github.com/Simiely/AE-Lyrics-Animator)（v3.5）：
+- [DEVELOPMENT.md §D1/§D2](https://github.com/Simiely/AE-Lyrics-Animator/blob/main/DEVELOPMENT.md)（Panel 宽度不受控、alignment 双轴格式）
+- 源码 UI 工厂函数 `addParamRow()` / `addDropdownRow()`（[歌词逐字散落动画工具.jsx](https://github.com/Simiely/AE-Lyrics-Animator/blob/main/歌词逐字散落动画工具.jsx)）

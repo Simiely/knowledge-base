@@ -64,7 +64,7 @@ knowledge-base/
 
 ## 最近更新
 
-- 2026-08-03 清理骨架示意条目，写入首批从 AE-Lyrics-Animator 提炼的真实条目
+- 2026-08-03 清理示意条目，写入 AE-Lyrics 提炼条目（条目标注 source 来源链接，模板新增 source 字段）
 
 ## 使用建议
 

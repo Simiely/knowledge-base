@@ -3,6 +3,7 @@ tags: [ae, api, sdk]
 date: 2026-08-03
 status: stable
 related: []
+source: https://github.com/Simiely/AE-Lyrics-Animator/blob/main/DEVELOPMENT.md
 ---
 # AE 2026 中文版 matchName 兼容
 
@@ -42,3 +43,9 @@ if (!animatorsGroup) {
 
 - 所有 AE 属性访问统一走 fallback 函数，不硬编码单一 matchName
 - 在 AE 2026 中文版实测后再发布；涉及属性路径的改动都要跑一遍 fallback 链
+
+## 来源
+
+提炼自 [AE-Lyrics-Animator](https://github.com/Simiely/AE-Lyrics-Animator)（v3.5）：
+- [DEVELOPMENT.md §A1/A2](https://github.com/Simiely/AE-Lyrics-Animator/blob/main/DEVELOPMENT.md)（matchName 差异、Text Animators 组位置）
+- 源码 `addAnimProperty()` / `findAnimatorsGroup()`（[歌词逐字散落动画工具.jsx](https://github.com/Simiely/AE-Lyrics-Animator/blob/main/歌词逐字散落动画工具.jsx)）

@@ -3,6 +3,7 @@ tags: [ae, text-animator, expression]
 date: 2026-08-03
 status: stable
 related: []
+source: https://github.com/Simiely/AE-Lyrics-Animator/blob/main/DEVELOPMENT.md
 ---
 # Range Selector 只用 Percent 模式
 
@@ -35,3 +36,9 @@ hPEnd.setValue(pEnd);
 - 逐字锁定一律 Percent 等分，不用 Index
 - Index 模式需要额外设置 Units 且兼容性差，直接放弃
 - `textIndex` 表达式变量在 AE 2026 也不可用，逐字效果用「每字符独立动画器 + 硬编码索引」实现
+
+## 来源
+
+提炼自 [AE-Lyrics-Animator](https://github.com/Simiely/AE-Lyrics-Animator)（v3.5）：
+- [DEVELOPMENT.md §A3/§B2](https://github.com/Simiely/AE-Lyrics-Animator/blob/main/DEVELOPMENT.md)（Range Selector 4 套命名、Index → Percent 回退）
+- 源码 `lockCharRange()`（[歌词逐字散落动画工具.jsx](https://github.com/Simiely/AE-Lyrics-Animator/blob/main/歌词逐字散落动画工具.jsx)）
