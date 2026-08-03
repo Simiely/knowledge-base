@@ -47,6 +47,9 @@ knowledge-base/
 - C4D 2026 迁移报错 → `解决方案/C4D2026SDK破坏性迁移清单.md`
 - C4D 用户数据默认值异常 → `解决方案/C4D用户数据写入类型与单位.md`
 - C4D 需要动态多列列表 → `解决方案/C4D动态列表控件方案.md`
+- Blender 面板列表卡 / 需手动刷新 → `解决方案/Blender面板缓存与手动刷新.md`
+- Blender 插件删除物体后撤销报错 → `解决方案/BlenderUNDO与bpy.data引用陷阱.md`
+- Blender 中文名称显示参差 → `解决方案/BlenderCJK字符宽度截断.md`
 - 想规范单个仓库的文档 → `单项目规范/README.md`
 - 忘记某条经验在哪 → Obsidian 打开本目录全文搜索
 
@@ -71,7 +74,7 @@ knowledge-base/
 
 ## 最近更新
 
-- 2026-08-03 提炼 c4d-userdata-manager：新增 3 条 C4D 2026 迁移经验（SDK 迁移清单/用户数据写入/动态列表），C4D 板块共 7 条
+- 2026-08-03 提炼 blender-mesh-face-sorter：新增 3 条 Blender 经验（面板缓存/UNDO 陷阱/CJK 宽度），Blender 板块首建
 
 ## 使用建议
 
