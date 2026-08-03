@@ -40,6 +40,10 @@ knowledge-base/
 - 写 AE 脚本（ScriptUI 布局问题） → `解决方案/ScriptUI布局两坑.md`
 - AE 属性取不到 / matchName 不匹配 → `解决方案/AE2026中文版matchName兼容.md`
 - 做文字动画器（逐字 / 波浪 / 散落） → `解决方案/AERangeSelector只用Percent模式.md`
+- C4D 插件面板空白 / 二次打开崩溃 → `解决方案/C4D对话框生命周期与二次打开崩溃.md`
+- C4D 隐藏/显示不生效 → `解决方案/C4D可见性控制与状态快照.md`
+- C4D UI 控件莫名消失 → `解决方案/C4DPythonSDK参数命名坑.md`
+- C4D 选中/查找对象错乱 → `解决方案/C4D对象用GUID标识.md`
 - 想规范单个仓库的文档 → `单项目规范/README.md`
 - 忘记某条经验在哪 → Obsidian 打开本目录全文搜索
 
@@ -64,7 +68,7 @@ knowledge-base/
 
 ## 最近更新
 
-- 2026-08-03 清理示意条目，写入 AE-Lyrics 提炼条目（条目标注 source 来源链接，模板新增 source 字段）
+- 2026-08-03 提炼 c4d-mesh-face-sorter：新增 4 条 C4D 解决方案（对话框生命周期/可见性/参数命名/GUID）；AE-Lyrics 4 条已标注 source
 
 ## 使用建议
 
