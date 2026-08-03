@@ -74,6 +74,10 @@ knowledge-base/
 - Safari 页面突然卡顿（CDN 脚本） → `解决方案/关键JS库本地托管不用CDN.md`
 - Django 改内容丢用户数据 → `解决方案/数据表稳定唯一键与增量同步.md`
 - 前端 JS 全部失效 / Alpine 改了不生效 → `解决方案/前端JS两坑IIFE分号与Alpine写入.md`
+- Android 签名密钥泄露 / 仓库安全 → `解决方案/Android签名密钥绝不入库.md`
+- Android 13+ 通知不弹 → `解决方案/Android13通知权限运行时申请.md`
+- Android 后台拉起 App 被拦 → `解决方案/Android后台启动限制BAL与PendingIntent授权.md`
+- Android 闹钟到点不准 → `解决方案/Android精确闹钟声明权限不等于用对API.md`
 - 本地工具"改了代码没效果" → `解决方案/本地服务防浏览器缓存旧代码.md`
 - 请求挂起 / 按钮一直转圈 → `解决方案/请求必须带超时与UI状态finally恢复.md`
 - 本地服务被其他端口页面调用被拦 → `解决方案/本地工具服务跨域被拦需开CORS.md`
@@ -103,6 +107,7 @@ knowledge-base/
 
 ## 最近更新
 
+- 2026-08-03 提炼 meituan-bike-reminder：新增 4 条 Android 经验（签名密钥不入库/通知权限/BAL/精确闹钟），Android 领域首建
 - 2026-08-03 提炼 learning-platform：新增 4 条 Web 移动端 / Django 经验（iOS Safari 布局三坑/JS 库本地托管/稳定唯一键/前端 JS 两坑），Web/Django 领域首建
 - 2026-08-03 提炼 potty-training-miniprogram：新增 4 条小程序经验（openid 探针法/block wx:if 崩溃/iPad 适配/云缓存三层），小程序板块共 7 条
 - 2026-08-03 提炼 workbuddy-credits-tool：新增 4 条 Node/Web 工具经验（缓存旧代码/请求超时/CORS/历史快照建模），Node 领域首建
