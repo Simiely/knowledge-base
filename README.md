@@ -70,6 +70,10 @@ knowledge-base/
 - 小程序页面闪退 / 授权后卡死 → `解决方案/小程序不用blockwxif配对.md`
 - 小程序 iPad / 大屏布局不生效 → `解决方案/小程序iPad大屏适配.md`
 - 小程序每次打开都全量拉云端 → `解决方案/小程序云缓存三层只刷当天.md`
+- Web 移动端 iOS 布局错乱 / 铺不满屏 → `解决方案/iOSSafari布局三坑.md`
+- Safari 页面突然卡顿（CDN 脚本） → `解决方案/关键JS库本地托管不用CDN.md`
+- Django 改内容丢用户数据 → `解决方案/数据表稳定唯一键与增量同步.md`
+- 前端 JS 全部失效 / Alpine 改了不生效 → `解决方案/前端JS两坑IIFE分号与Alpine写入.md`
 - 本地工具"改了代码没效果" → `解决方案/本地服务防浏览器缓存旧代码.md`
 - 请求挂起 / 按钮一直转圈 → `解决方案/请求必须带超时与UI状态finally恢复.md`
 - 本地服务被其他端口页面调用被拦 → `解决方案/本地工具服务跨域被拦需开CORS.md`
@@ -99,6 +103,7 @@ knowledge-base/
 
 ## 最近更新
 
+- 2026-08-03 提炼 learning-platform：新增 4 条 Web 移动端 / Django 经验（iOS Safari 布局三坑/JS 库本地托管/稳定唯一键/前端 JS 两坑），Web/Django 领域首建
 - 2026-08-03 提炼 potty-training-miniprogram：新增 4 条小程序经验（openid 探针法/block wx:if 崩溃/iPad 适配/云缓存三层），小程序板块共 7 条
 - 2026-08-03 提炼 workbuddy-credits-tool：新增 4 条 Node/Web 工具经验（缓存旧代码/请求超时/CORS/历史快照建模），Node 领域首建
 - 2026-08-03 提炼 miniprogram-item-expiry（删除前）：新增 3 条小程序/云开发经验（域名硬约束/双向同步防循环/变更检测优化），小程序领域首建
