@@ -59,6 +59,10 @@ knowledge-base/
 - AE 用脚本生成图形（圆环/粒子） → `速查表/AEShapeLayer开发速查.md`
 - AE 2D/3D 属性赋值崩溃 → `解决方案/AE表达式维度继承用value关键字.md`
 - AE 音频驱动动画 → `解决方案/AE音频驱动图层方案.md`
+- 扩展取不到 Cookie / 权限问题 → `解决方案/MV3扩展权限三层防线.md`
+- 扩展 SW 注册失败 → `解决方案/MV3ServiceWorker注册规范.md`
+- 扩展重装丢数据 → `解决方案/浏览器扩展重装保留数据manifestkey.md`
+- 清除 Cookie 有残留 → `解决方案/Cookie操作URL前导点号.md`
 - 想规范单个仓库的文档 → `单项目规范/README.md`
 - 忘记某条经验在哪 → Obsidian 打开本目录全文搜索
 
@@ -84,7 +88,7 @@ knowledge-base/
 
 ## 最近更新
 
-- 2026-08-03 提炼 AudioScale：新增 2 条 AE 经验（value 维度继承/音频驱动）+ 跨语言条目补充 diff 引用；AE 板块共 13 条 + 2 速查
+- 2026-08-03 提炼 edge-multi-account-cookie：新增 4 条扩展经验（权限防线/SW 规范/manifest key/前导点号），扩展领域首建
 
 ## 使用建议
 
