@@ -78,6 +78,13 @@ knowledge-base/
 - Android 13+ 通知不弹 → `解决方案/Android13通知权限运行时申请.md`
 - Android 后台拉起 App 被拦 → `解决方案/Android后台启动限制BAL与PendingIntent授权.md`
 - Android 闹钟到点不准 → `解决方案/Android精确闹钟声明权限不等于用对API.md`
+- Windows 窗口覆盖/蒙版工具 → `解决方案/Win32窗口操作三坑.md` + `解决方案/托盘常驻程序生命周期设计.md`
+- PyInstaller 打包找不到文件 / 便携工具配置丢失 → `解决方案/PyInstaller路径与便携工具配置.md`
+- Android 常驻通知不显示 → `解决方案/Android前台服务通知渠道与时序.md`
+- Android 蒙版盖不住状态栏 → `解决方案/Android全屏蒙版盖状态栏刘海.md`
+- PowerShell 脚本中文乱码 → `解决方案/PowerShell中文乱码与先测量.md`
+- 监听新窗口/进程出现（避免轮询） → `解决方案/事件驱动替代轮询.md`
+- 桌面程序汉化 → `解决方案/桌面程序安全汉化方法论.md`
 - 本地工具"改了代码没效果" → `解决方案/本地服务防浏览器缓存旧代码.md`
 - 请求挂起 / 按钮一直转圈 → `解决方案/请求必须带超时与UI状态finally恢复.md`
 - 本地服务被其他端口页面调用被拦 → `解决方案/本地工具服务跨域被拦需开CORS.md`
@@ -107,6 +114,7 @@ knowledge-base/
 
 ## 最近更新
 
+- 2026-08-03 提炼 6 个工具仓库：新增 9 条经验（Win32 窗口三坑/托盘生命周期/PyInstaller 路径/Android 前台通知/全屏蒙版/PowerShell 编码/事件驱动/汉化方法论），Windows 桌面领域首建
 - 2026-08-03 提炼 meituan-bike-reminder：新增 4 条 Android 经验（签名密钥不入库/通知权限/BAL/精确闹钟），Android 领域首建
 - 2026-08-03 提炼 learning-platform：新增 4 条 Web 移动端 / Django 经验（iOS Safari 布局三坑/JS 库本地托管/稳定唯一键/前端 JS 两坑），Web/Django 领域首建
 - 2026-08-03 提炼 potty-training-miniprogram：新增 4 条小程序经验（openid 探针法/block wx:if 崩溃/iPad 适配/云缓存三层），小程序板块共 7 条
