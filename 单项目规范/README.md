@@ -104,3 +104,31 @@
 | 踩坑并解决 | 写进问题记录（一坑一篇）→ 收尾时提炼 |
 | 发版 | README（如有变更）+ CHANGELOG 加版本节 |
 | 约定/坑变化 | AGENTS.md 更新，或新增 rules/ 文件 |
+
+## 九、文档基线（断点续传）
+
+**为什么**：仓库重写完成后，必须留下"基线标记"（日期 + commit hash），否则以后更新了没人记得重写到哪，可能从头重写。
+
+**标注位置**：每个仓库的 `AGENTS.md` 顶部（AI 进仓库第一眼看的地方）：
+
+```markdown
+# AGENTS.md · 项目规则
+
+> 📌 **文档基线**：YYYY-MM-DD（commit `abcdef1`）完成四件套重写
+> **更新文档/代码后，请更新此行**（日期 + 新 commit hash），并在 CHANGELOG 追加版本
+```
+
+**为什么不只标日期**：日期是"天"级，同一天多个 commit 分不清；**commit hash 是"提交"级**，可用 `git diff <基线hash>` 精确对比"上次重写后改了什么"——断点续传的关键能力。
+
+**维护流程**（改仓库后四步）：
+
+```
+① 该仓库 CHANGELOG.md 追加版本节
+② AGENTS.md 基线行更新（新日期 + 新 commit hash）
+③ knowledge-base/仓库盘点表.md 回填新 hash
+④ 推送
+```
+
+**总表**：knowledge-base 根目录的 [`仓库盘点表.md`](../仓库盘点表.md) 是全部仓库的断点索引（领域/四件套状态/重写日期/基线 commit）。更新仓库后必须回填。
+
+**核对方法**：想确认某仓库"重写后改了什么"，用 `git log --oneline <基线hash>..HEAD` 或 `git diff <基线hash> HEAD`。
