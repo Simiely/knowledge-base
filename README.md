@@ -53,6 +53,10 @@ knowledge-base/
 - AE 粒子/批量随机错乱 → `解决方案/AE表达式seedRandom种子管理.md`
 - AE 面板控件错位 / 下拉失效 → `解决方案/ScriptUI可见性与控件状态陷阱.md`
 - AE 模糊边缘被裁剪 → `解决方案/AEMask与Effect渲染顺序.md`
+- AE 表达式不能用中文名 → `解决方案/AE表达式跨语言兼容.md`
+- AE 粒子分布/密度渐变 → `解决方案/AE表达式粒子分布与密度衰减.md`
+- AE 动画从播放头开始 / 清理生成图层 → `解决方案/AE动画时间基准与图层清理.md`
+- AE 用脚本生成图形（圆环/粒子） → `速查表/AEShapeLayer开发速查.md`
 - 想规范单个仓库的文档 → `单项目规范/README.md`
 - 忘记某条经验在哪 → Obsidian 打开本目录全文搜索
 
@@ -77,7 +81,7 @@ knowledge-base/
 
 ## 最近更新
 
-- 2026-08-03 提炼 starry-sky-generator：新增 3 条 AE 经验（seedRandom 种子/可见性陷阱/渲染顺序），AE 板块共 7 条
+- 2026-08-03 提炼 CircleDiffusion（删除前）：新增 4 条 AE 经验（Shape Layer 速查/跨语言/粒子分布/时间基准）；AE 板块共 11 条 + 2 速查
 
 ## 使用建议
 
