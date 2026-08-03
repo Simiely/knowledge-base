@@ -54,6 +54,7 @@ knowledge-base/
 ## 场景速查（我在做什么 → 看这里）
 
 - 写 AE 脚本（ES3 语法限制 / JSON polyfill） → `速查表/ES3语法限制速查.md`
+- 查哪些经验已做成技能 → `速查表/技能化清单.md`
 - 写 AE 脚本（ScriptUI 布局问题） → `解决方案/ScriptUI布局两坑.md`
 - AE 属性取不到 / matchName 不匹配 → `解决方案/AE2026中文版matchName兼容.md`
 - 做文字动画器（逐字 / 波浪 / 散落） → `解决方案/AERangeSelector只用Percent模式.md`
@@ -135,6 +136,7 @@ knowledge-base/
 
 ## 最近更新
 
+- 2026-08-03 新增「技能化清单」：3 条经验已技能化到 codebuddy-skills（es3/c4d-sdk-compat/quota-guard）
 - 2026-08-03 三管理仓库互链完成：knowledge-base ↔ codebuddy-skills ↔ hub-world（README 互链 + 盘点表收录基线）
 - 2026-08-03 与 codebuddy-skills 建立管理仓库互链（README 顶部 + 场景速查）
 - 2026-08-03 修复孤立文档：分类边界表加「索引入口」链接、归档说明补链接、复用模式注明暂空
