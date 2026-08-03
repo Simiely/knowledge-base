@@ -3,7 +3,7 @@
 沉淀所有项目（AE 脚本 / C4D 插件 / Blender 插件 / Web 项目 / 小程序）的可复用经验。
 原则：**写的时候多花 10 秒，找的时候省 10 分钟**。
 
-🔗 **关联管理仓库**：[codebuddy-skills](https://github.com/Simiely/codebuddy-skills)（个人技能仓库）——本仓管"经验"，那边管"技能"，互相引用。
+🔗 **关联管理仓库**：[codebuddy-skills](https://github.com/Simiely/codebuddy-skills)（个人技能仓库）+ [hub-world](https://github.com/Simiely/hub-world)（项目导航/文档快照中心）——本仓管"经验"，那边管"技能/项目"，互相引用。
 
 ## 一套方案，两个层级（单项目 + 多项目）
 
@@ -109,6 +109,7 @@ knowledge-base/
 - 想规范单个仓库的文档 → `单项目规范/README.md`
 - 查看所有仓库的规范状态 / 基线 → `仓库盘点表.md`
 - 查看个人技能集合（管理仓库） → https://github.com/Simiely/codebuddy-skills
+- 查看全部项目导航 / 文档中心（管理仓库） → https://github.com/Simiely/hub-world
 - 忘记某条经验在哪 → Obsidian 打开本目录全文搜索
 
 ## 条目模板（怎么用）
@@ -134,6 +135,7 @@ knowledge-base/
 
 ## 最近更新
 
+- 2026-08-03 三管理仓库互链完成：knowledge-base ↔ codebuddy-skills ↔ hub-world（README 互链 + 盘点表收录基线）
 - 2026-08-03 与 codebuddy-skills 建立管理仓库互链（README 顶部 + 场景速查）
 - 2026-08-03 修复孤立文档：分类边界表加「索引入口」链接、归档说明补链接、复用模式注明暂空
 - 2026-08-03 新增「仓库盘点表」（24 个仓库断点索引：领域/四件套/日期/基线 commit）；单项目规范新增「文档基线」规则（断点续传流程）
