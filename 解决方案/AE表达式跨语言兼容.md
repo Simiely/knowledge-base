@@ -44,6 +44,19 @@ prop.property("ADBE Vector Ellipse Size")
 | 控制器 effect 引用 | 索引 `effect(N)(1)`（已知顺序） |
 | 图层/属性引用 | matchName + 候选 fallback |
 
+**脚本侧找生成的图层（不靠名字）——diff 前后引用**：
+
+```javascript
+// AE 中文版会把生成的图层名也本地化（"Audio Amplitude"→"音频振幅"）
+// 执行命令前记录所有 layer，执行后找不在原集合里的那层
+var before = {};
+for (var i = 1; i <= comp.numLayers; i++) before[comp.layer(i).index] = true;
+app.executeCommand(2100);  // Convert Audio to Keyframes
+for (var j = 1; j <= comp.numLayers; j++) {
+    if (!before[comp.layer(j).index]) { /* 这就是生成的新层 */ }
+}
+```
+
 ## 预防
 
 - 生成代码时脚本侧用中文做 UI，表达式侧一律英文/索引
