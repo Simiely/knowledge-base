@@ -135,6 +135,7 @@ knowledge-base/
 - **断点续传**：更新某仓库后，① 该仓库 CHANGELOG 追加版本 → ② AGENTS 基线行更新（日期+hash）→ ③ `仓库盘点表.md` 回填新 hash → ④ 推送（规则见 `单项目规范/README.md` 第九节）
 
 ## 最近更新
+- 2026-08-07 新增「浏览器自动化连接已运行Edge」：agent-browser --cdp 接管已运行 Edge（edge://inspect 远程调试开关），解决 headless 盲操作/登录态复用，浏览器自动化领域首建
 
 - 2026-08-03 新增「技能化清单」：3 条经验已技能化到 codebuddy-skills（es3/c4d-sdk-compat/quota-guard）
 - 2026-08-03 三管理仓库互链完成：knowledge-base ↔ codebuddy-skills ↔ hub-world（README 互链 + 盘点表收录基线）
