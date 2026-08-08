@@ -5,6 +5,8 @@
 
 🔗 **关联管理仓库**：[codebuddy-skills](https://github.com/Simiely/codebuddy-skills)（个人技能仓库）+ [hub-world](https://github.com/Simiely/hub-world)（项目导航/文档快照中心）——本仓管"经验"，那边管"技能/项目"，互相引用。
 
+> 📌 **本库来源**：由 [knowledge-base-template](https://github.com/Simiely/knowledge-base-template)（模板库,零个人数据）初始化而来。本库是**用户数据库**：全部内容为实际使用产生的数据。模板库升级骨架（规范/模板/索引框架）时,按 [`初始化说明.md` 第五节](https://github.com/Simiely/knowledge-base-template/blob/main/初始化说明.md) 同步骨架文件,**数据永不回流模板库**。
+
 ## 一套方案，两个层级（单项目 + 多项目）
 
 | 层级 | 管理对象 | 入口 | 核心内容 |
@@ -133,8 +135,10 @@ knowledge-base/
 - **提炼节奏**：项目收尾或解决问题后顺手写，不搞额外复盘仪式
 - **隐私红线（公开仓库）**：禁止收录任何敏感数据——凭据（token / 密码 / API Key）、个人信息（邮箱 / 手机 / 住址）、本地绝对路径、未公开的项目细节。发现已收录 → 立即清理并提交说明
 - **断点续传**：更新某仓库后，① 该仓库 CHANGELOG 追加版本 → ② AGENTS 基线行更新（日期+hash）→ ③ `仓库盘点表.md` 回填新 hash → ④ 推送（规则见 `单项目规范/README.md` 第九节）
+- **骨架升级**：模板库（knowledge-base-template）改了规范/模板/索引框架时，只 merge 骨架文件（单项目规范/ 模板/ 索引空壳等），**绝不同步数据文件**（解决方案/速查表条目、索引条目行）——数据永不回流模板库
 
 ## 最近更新
+- 2026-08-08 完成「模板库 / 用户数据库」分离：新建 knowledge-base-template（零个人数据骨架,Use this template 即开新库）；本库定位为用户数据库,README 顶部标注来源,维护规则新增「骨架升级」条款
 - 2026-08-07 新增「浏览器自动化连接已运行Edge」：agent-browser --cdp 接管已运行 Edge（edge://inspect 远程调试开关），解决 headless 盲操作/登录态复用，浏览器自动化领域首建
 
 - 2026-08-03 新增「技能化清单」：3 条经验已技能化到 codebuddy-skills（es3/c4d-sdk-compat/quota-guard）
