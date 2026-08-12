@@ -108,6 +108,11 @@ knowledge-base/
 - 请求挂起 / 按钮一直转圈 → `解决方案/请求必须带超时与UI状态finally恢复.md`
 - 本地服务被其他端口页面调用被拦 → `解决方案/本地工具服务跨域被拦需开CORS.md`
 - 历史快照爆炸 / 折线趋势失真 → `解决方案/历史快照数据建模三原则.md`
+- 快照同步删除不跨设备传播 / 已删数据复活 → `解决方案/快照同步删除传播墓碑机制.md`
+- 公开发布包担心泄露密码 / token → `解决方案/公开发布包凭证空壳铁律.md` + `解决方案/Android签名密钥绝不入库.md`
+- token 反复报 bad_token / 恢复备份盖坏配置 → `解决方案/凭据保存前实时验证.md`
+- 小程序点击无反应（动态事件名） → `解决方案/小程序wxml不支持动态事件名.md`
+- 小程序自定义 tabBar 键盘顶乱 / 遮挡输入 → `解决方案/小程序自定义tabBar键盘避让.md`
 - 想规范单个仓库的文档 → [`../模板库/单项目规范/README.md`](../模板库/单项目规范/README.md)
 - 查看所有仓库的规范状态 / 基线 → `仓库盘点表.md`
 - 查看个人技能集合（管理仓库） → https://github.com/Simiely/codebuddy-skills
@@ -138,6 +143,7 @@ knowledge-base/
 
 ## 最近更新
 - 2026-08-12 盘点表大更新：新增 tv-film-player / tools-center 两仓转正（已重写 26→28），8 仓基线刷新（gh-release-center / clipboard-tool / AE-Lyrics-Animator / blender-intersect-quads-builder / TimeAxisIndent / edge-multi-account-cookie / workbuddy-credits-tool / collab-plan-miniprogram），未完成清单加入 carselection / light-alchemy / weread-budget-extension，新增「不维护」登记（resources / light-alchemy / carselection），修正 codebuddy-skills 与 hub-world 重复登记
+- 2026-08-12 基线刷新仓库增量提炼：新增 5 条经验（快照同步墓碑机制 / 公开包凭证空壳 / 凭据保存前验证 / wxml 动态事件名 / 自定义 tabBar 键盘避让），来源 edge-multi-account-cookie / workbuddy-credits-tool / gh-release-center / collab-plan-miniprogram
 - 2026-08-08 双库合并为同仓库双目录：骨架 → `模板库/`，数据 → `用户库/`，分开迭代
 - 2026-08-07 新增「浏览器自动化连接已运行Edge」：agent-browser --cdp 接管已运行 Edge（edge://inspect 远程调试开关），解决 headless 盲操作/登录态复用，浏览器自动化领域首建
 
