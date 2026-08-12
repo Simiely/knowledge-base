@@ -137,6 +137,7 @@ knowledge-base/
 - **骨架迭代**：规范 / 模板 / 索引框架由 [`../模板库/`](../模板库/README.md) 统一维护，本目录只放数据；**数据永不回流模板库**。模板库改骨架后，本目录无需同步（同仓库，引用即最新）
 
 ## 最近更新
+- 2026-08-12 盘点表大更新：新增 tv-film-player / tools-center 两仓转正（已重写 26→28），8 仓基线刷新（gh-release-center / clipboard-tool / AE-Lyrics-Animator / blender-intersect-quads-builder / TimeAxisIndent / edge-multi-account-cookie / workbuddy-credits-tool / collab-plan-miniprogram），未完成清单加入 carselection / light-alchemy / weread-budget-extension，新增「不维护」登记（resources / light-alchemy / carselection），修正 codebuddy-skills 与 hub-world 重复登记
 - 2026-08-08 双库合并为同仓库双目录：骨架 → `模板库/`，数据 → `用户库/`，分开迭代
 - 2026-08-07 新增「浏览器自动化连接已运行Edge」：agent-browser --cdp 接管已运行 Edge（edge://inspect 远程调试开关），解决 headless 盲操作/登录态复用，浏览器自动化领域首建
 
