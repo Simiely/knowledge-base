@@ -3,7 +3,7 @@
 沉淀所有项目（AE 脚本 / C4D 插件 / Blender 插件 / Web 项目 / 小程序）的可复用经验。
 原则：**写的时候多花 10 秒，找的时候省 10 分钟**。
 
-🔗 **关联管理仓库**：[codebuddy-skills](https://github.com/Simiely/codebuddy-skills)（个人技能仓库）+ [hub-world](https://github.com/Simiely/hub-world)（项目导航/文档快照中心）——本仓管"经验"，那边管"技能/项目"，互相引用。
+🔗 **关联管理仓库**：[hub-world](https://github.com/Simiely/hub-world)（项目导航/文档快照中心）——本仓管"经验"，那边管"项目展示/快照"，互相引用。
 
 ---
 
