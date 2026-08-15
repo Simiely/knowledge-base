@@ -3,7 +3,7 @@
 > 本目录是 `knowledge-base` 仓库的**用户数据库**：全部内容为实际使用产生的数据（踩坑经验 / 速查清单 / 仓库盘点）。
 > 骨架（规范 / 模板 / 索引框架）在仓库根 [`../模板库/`](../模板库/README.md)，两库同仓库、分开迭代。
 
-🔗 **关联管理仓库**：[codebuddy-skills](https://github.com/Simiely/codebuddy-skills)（个人技能仓库）+ [hub-world](https://github.com/Simiely/hub-world)（项目导航/文档快照中心）——本仓管"经验"，那边管"技能/项目"，互相引用。
+🔗 **关联管理仓库**：[hub-world](https://github.com/Simiely/hub-world)（项目导航/文档快照中心）——本仓管"经验"，那边管"项目展示/快照"，互相引用。
 
 ## 一套方案，两个层级（单项目 + 多项目）
 
@@ -55,7 +55,6 @@ knowledge-base/
 ## 场景速查（我在做什么 → 看这里）
 
 - 写 AE 脚本（ES3 语法限制 / JSON polyfill） → `速查表/ES3语法限制速查.md`
-- 查哪些经验已做成技能 → `速查表/技能化清单.md`
 - 写 AE 脚本（ScriptUI 布局问题） → `解决方案/ScriptUI布局两坑.md`
 - AE 属性取不到 / matchName 不匹配 → `解决方案/AE2026中文版matchName兼容.md`
 - 做文字动画器（逐字 / 波浪 / 散落） → `解决方案/AERangeSelector只用Percent模式.md`
@@ -115,7 +114,6 @@ knowledge-base/
 - 小程序自定义 tabBar 键盘顶乱 / 遮挡输入 → `解决方案/小程序自定义tabBar键盘避让.md`
 - 想规范单个仓库的文档 → [`../模板库/单项目规范/README.md`](../模板库/单项目规范/README.md)
 - 查看所有仓库的规范状态 / 基线 → `仓库盘点表.md`
-- 查看个人技能集合（管理仓库） → https://github.com/Simiely/codebuddy-skills
 - 查看全部项目导航 / 文档中心（管理仓库） → https://github.com/Simiely/hub-world
 - 忘记某条经验在哪 → Obsidian 打开本目录全文搜索
 
