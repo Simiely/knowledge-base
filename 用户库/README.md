@@ -140,6 +140,7 @@ knowledge-base/
 - **骨架迭代**：规范 / 模板 / 索引框架由 [`../模板库/`](../模板库/README.md) 统一维护，本目录只放数据；**数据永不回流模板库**。模板库改骨架后，本目录无需同步（同仓库，引用即最新）
 
 ## 最近更新
+- 2026-08-18 vehicle-design-knowledge **定位通用化并更名为 knowledge-retrieval-system**（领域知识检索系统方案，首案=车型设计）：README 重写 + 新增领域适配指南 + M1-M4 层级泛化（车型→领域），基线 `b5a5fd2`，盘点表同步
 - 2026-08-17 盘点表登记新仓 vehicle-design-knowledge（车型设计信息检索系统 · Web 方案文档，四件套就位，基线 64c7057，已重写 34→35）
 - 2026-08-12 盘点表大更新：新增 tv-film-player / tools-center 两仓转正（已重写 26→28），8 仓基线刷新（gh-release-center / clipboard-tool / AE-Lyrics-Animator / blender-intersect-quads-builder / TimeAxisIndent / edge-multi-account-cookie / workbuddy-credits-tool / collab-plan-miniprogram），未完成清单加入 carselection / light-alchemy / weread-budget-extension，新增「不维护」登记（resources / light-alchemy / carselection），修正 codebuddy-skills 与 hub-world 重复登记
 - 2026-08-12 基线刷新仓库增量提炼：新增 5 条经验（快照同步墓碑机制 / 公开包凭证空壳 / 凭据保存前验证 / wxml 动态事件名 / 自定义 tabBar 键盘避让），来源 edge-multi-account-cookie / workbuddy-credits-tool / gh-release-center / collab-plan-miniprogram
