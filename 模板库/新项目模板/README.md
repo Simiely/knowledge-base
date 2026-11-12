@@ -16,6 +16,8 @@
 
 ## 怎么用
 
+新建时可以直接复制 [提示词模板 A](../提示词模板.md) 交给 AI，或手动执行下面的命令。
+
 ```powershell
 pwsh 新建仓库.ps1 -Name my-tool -Profile monorepo -Target ..\my-tool
 pwsh 新建仓库.ps1 -Name my-skills -Profile skills -Target ..\my-skills

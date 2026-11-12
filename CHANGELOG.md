@@ -9,6 +9,7 @@
 - `模板库/单项目规范/`：保留 4 文件模型，新增机器层（repo-kit、版本锁、CI）与完成定义。
 - `模板库/新项目模板/`：`base/` + `monorepo` / `skills` / `link-only` 三个 profile，
   以及 `新建仓库.ps1`（复制、替换占位符、安装 kit、生成、检查）。
+- `模板库/提示词模板.md`：新建仓库与整理已有仓库两段可直接复制的提示词。
 - `模板库/repo-kit/`：vendored repo-kit v2.3.2，含 `REPO_STANDARD.md`、脚本、schema、测试。
 - 根 `schema/`、`tools/`、`requirements.txt`：知识库自身采用 `link-only` 校验。
 - `.github/workflows/repo-check.yml`：自检 + 三个模板 smoke + kit 自测（drift_probe + 49 测试）。
