@@ -1,0 +1,18 @@
+{
+  "_comment": "真源映射：truth 从源码/原始材料抽取，docs 是被校验的文档。两个 profile 的差异只在这里。",
+  "code": [
+    {
+      "truth": "examples/code/config.py",
+      "patterns": ["\"([A-Za-z_][A-Za-z0-9_]*)\"\\s*:"],
+      "docs": [
+        "examples/code/docs/config.md",
+        "examples/code/docs/retry.md"
+      ],
+      "token_pattern": "^(?:[a-z][a-z0-9_]*_[a-z0-9_]+|[a-z][a-zA-Z0-9]*[A-Z][a-zA-Z0-9]*)$",
+      "allowlist": [],
+      "co_change": true,
+      "co_change_docs": ["examples/code/docs/config.md"]
+    }
+  ],
+  "knowledge": []
+}

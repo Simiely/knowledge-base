@@ -1,0 +1,64 @@
+name: repo-check
+
+on:
+  pull_request:
+    paths:
+      - '模板库/**'
+      - '用户库/**'
+      - 'schema/**'
+      - 'tools/**'
+      - 'README.md'
+      - '.github/**'
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  self-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements.txt
+      - name: Invariants (link-only)
+        run: python tools/repo-kit/check_repo.py --root .
+      - name: Kit lock
+        run: pwsh tools/update-repo-kit.ps1 -Check
+
+  template-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements.txt
+      - name: monorepo template
+        run: pwsh -NoProfile -File 模板库/新项目模板/新建仓库.ps1 -Name smoke-monorepo -Profile monorepo -Target $RUNNER_TEMP/smoke-monorepo
+      - name: skills template
+        run: pwsh -NoProfile -File 模板库/新项目模板/新建仓库.ps1 -Name smoke-skills -Profile skills -Target $RUNNER_TEMP/smoke-skills
+      - name: link-only template
+        run: pwsh -NoProfile -File 模板库/新项目模板/新建仓库.ps1 -Name smoke-link -Profile link-only -Target $RUNNER_TEMP/smoke-link
+      - name: Generated artifacts are up to date
+        run: |
+          python "$RUNNER_TEMP/smoke-monorepo/tools/repo-kit/generate.py" --root "$RUNNER_TEMP/smoke-monorepo" --check
+          python "$RUNNER_TEMP/smoke-skills/tools/repo-kit/generate.py" --root "$RUNNER_TEMP/smoke-skills" --check
+
+  kit-selftest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r 模板库/repo-kit/requirements.txt
+      - name: drift probe
+        run: python 模板库/repo-kit/scripts/drift_probe.py --root 模板库/repo-kit
+      - name: unit tests
+        working-directory: 模板库/repo-kit
+        run: python -m unittest discover -s tests

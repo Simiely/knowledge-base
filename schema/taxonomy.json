@@ -1,0 +1,68 @@
+{
+  "version": "2.3.2",
+  "name": "knowledge-base",
+  "include": [
+    "README.md",
+    "AGENTS.md",
+    "DEVELOPMENT.md",
+    "CHANGELOG.md",
+    "模板库/**",
+    "用户库/**"
+  ],
+  "context_files": [],
+  "exempt_basenames": [],
+  "slugger": "github",
+  "summary_policy": "off",
+  "link_only_files": ["*.md", "**/*.md"],
+  "types": ["tutorial", "how-to", "reference", "explanation"],
+  "kinds": ["standard", "decision", "index", "note", "glossary", "report", "pitfall"],
+  "statuses": ["draft", "active", "resolved", "superseded", "archived"],
+  "tiers": ["normal", "critical"],
+  "confidences": ["low", "medium", "high"],
+  "topics": ["experience", "templates", "governance", "standards"],
+  "relations": {
+    "depends-on": {
+      "direction": "directed",
+      "inverse": "depended-on-by",
+      "transitive": false
+    },
+    "extends": {
+      "direction": "directed",
+      "inverse": "extended-by",
+      "transitive": true
+    },
+    "spawned-from": {
+      "direction": "directed",
+      "inverse": "spawned",
+      "transitive": false
+    },
+    "supersedes": {
+      "direction": "directed",
+      "inverse": "superseded-by",
+      "transitive": false
+    },
+    "contradicts": {
+      "direction": "symmetric",
+      "inverse": null,
+      "transitive": false
+    },
+    "see-also": {
+      "direction": "symmetric",
+      "inverse": null,
+      "transitive": false
+    }
+  },
+  "review_days": {
+    "normal": 365,
+    "critical": 90
+  },
+  "entry_files": [],
+  "generated_files": [],
+  "ignore": [
+    ".github/**",
+    "tools/**",
+    "模板库/repo-kit/**",
+    "模板库/新项目模板/**",
+    "**/__pycache__/**"
+  ]
+}
