@@ -1,0 +1,22 @@
+# 系统与编辑器
+.obsidian/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# Node
+node_modules/
+
+# 本地产物
+.env
+*.log
+repo-kit.sarif
+_site/
+dist/
+coverage/

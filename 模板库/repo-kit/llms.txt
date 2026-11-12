@@ -1,0 +1,42 @@
+# repo-kit v2.3.2
+
+> 文档索引与机器可读入口：内容契约、类型化关系、证据与新鲜度。
+> 生成文件，勿手改。
+
+## Core
+
+- [README](./README.md)
+- [文档索引](./docs/index.md)
+- [使用说明](./docs/usage.md)
+- [决策索引](./docs/decisions/index.md)
+
+## By type
+
+### how-to
+
+- [重试策略](./examples/code/docs/retry.md) — retry_max 与 timeout_ms 的组合语义，以及如何验证最坏耗时。
+- [使用说明](./docs/usage.md) — 命令、新页清单、关系语义、报错表、baseline 与 v1 迁移。
+
+### reference
+
+- [运行时配置](./examples/code/docs/config.md) — 运行时配置键的语义；数值以真源为准，本页不复制。
+- [决策索引](./docs/decisions/index.md) — ADR 的唯一索引；编号唯一，不要求连续。
+- [文档索引](./docs/index.md) — 人工导航枢纽；生成索引见 _generated/index.md。
+
+### explanation
+
+- [证据与新鲜度](./docs/concepts/provenance.md) — source 类型、页面级与断言级 provenance、快照与复核窗口。
+- [单一事实源](./docs/concepts/ssot.md) — Rule of One 的含义、机器可判的部分，以及它管不了的语义真假。
+- [类型系统](./docs/concepts/types.md) — 为什么把 type 和 kind 拆开，以及它们与 Diátaxis/DITA 的对应。
+- [ADR-0001 采用四平面 × 三表面的 v2 架构](./docs/decisions/ADR-0001-v2-architecture.md) — 从「七层 + 八条不变量」重构为内容契约、知识图谱、证据、验证四个平面，以及阅读、机器、贡献三个表面。
+- [ADR-0002 v2.2 是 v2.1 的 opt-in 超集](./docs/decisions/ADR-0002-v2-2-compatibility.md) — 默认行为保持 v2.1；monorepo、report、多源、co-change、SARIF 全部显式开启。
+- [ADR-0003 把踩坑经验做成 kind=pitfall](./docs/decisions/ADR-0003-pitfall-as-content-kind.md) — 坑是技能的失败模式；用内容页承载，加八个必填字段与生成索引，不新增平面。
+- [引导摩擦](./examples/knowledge/note-b.md) — 访谈记录显示，用户反复停在「看不到自己有没有进步」这一步。
+- [先看到价值再看到价格](./examples/knowledge/note-a.md) — 用户在体验到价值之前被要求付费，转化率显著下降。
+
+## Examples
+
+- [运行时配置](./examples/code/docs/config.md)
+- [重试策略](./examples/code/docs/retry.md)
+- [先看到价值再看到价格](./examples/knowledge/note-a.md)
+- [引导摩擦](./examples/knowledge/note-b.md)

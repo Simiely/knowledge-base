@@ -1,0 +1,8 @@
+# 治理基线与代码一起版本化，不依赖平台侧分支保护
+*                       @platform
+/schema/                @platform @docs
+/scripts/               @platform
+/docs/decisions/        @platform @architects
+/docs/concepts/         @docs
+/examples/              @docs
+/tests/                 @platform
