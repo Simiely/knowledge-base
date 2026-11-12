@@ -37,9 +37,10 @@
 pwsh 模板库/新项目模板/新建仓库.ps1 -Name my-tool -Profile monorepo -Target ..\my-tool
 ```
 
-三个 profile：
+四个 profile：
 
 - `monorepo`：代码仓库，带 `docs/` + 生成索引
+- `knowledge`：以文档为主的知识仓/应用仓，页面带 frontmatter 契约 + pitfall/freshness 检查（脚手架见 repo-kit 上游 `knowledge` profile；`新建仓库.ps1` 暂只支持另外三个）
 - `skills`：技能仓库，带 `SKILL.md` 契约
 - `link-only`：已有内容管线的文档仓，只查链接/锚点，不要求 frontmatter
 
