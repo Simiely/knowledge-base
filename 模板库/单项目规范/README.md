@@ -33,6 +33,10 @@
 | 人层 | 4 文件与生长式拆分 | `README.md` / `AGENTS.md` / `DEVELOPMENT.md` / `CHANGELOG.md` |
 | 机器层 | 内容契约、链接/锚点、真源、生成产物、版本锁 | `tools/repo-kit/`、`schema/`、`schema/kit.lock.json`、CI |
 
+规范版本单独标记：最新版本见 [`spec.json`](spec.json)，每个仓库通过 `schema/kit.lock.json` 的
+`spec_version` 声明自己按哪一版整理。任何程序读这一个字段即可判断版本；全局盘点用
+`pwsh 模板库/单项目规范/audit-spec.ps1 -ReposRoot <仓库根目录>`（加 `-Json` 输出机器可读结果）。
+
 **新建仓库不要手搭目录**：
 
 ```powershell
