@@ -101,6 +101,7 @@ CI 细节约定：
 | EverythingCmdPal | `monorepo` | 2.4.0 | 插件文档按 include 白名单扫描 |
 | taskbar-drawer | `monorepo` | 2.4.0 | 单应用；AGENTS 由模板生成，DEVELOPMENT 保持根文档 |
 | blender-render-console | `monorepo` | 2.4.0 | Python GUI；450 项单测进 CI；走查文档 3 篇 |
+| procedural-drawing-lab | `monorepo` | 2.4.0 | 零依赖静态实验场；docs 仅导航，实验清单以 README 为准 |
 | home-inventory | `knowledge` | 2.4.0 | 含 pitfall 页 |
 | design-tips | `knowledge` | 2.4.0 | 通用设计技巧条目 |
 | blender-tips | `knowledge` | 2.4.0 | 43 篇 Blender 技巧页；AGENTS 由模板生成 |
