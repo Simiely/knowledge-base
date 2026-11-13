@@ -102,6 +102,7 @@ CI 细节约定：
 | taskbar-drawer | `monorepo` | 2.4.0 | 单应用；AGENTS 由模板生成，DEVELOPMENT 保持根文档 |
 | home-inventory | `knowledge` | 2.4.0 | 含 pitfall 页 |
 | design-tips | `knowledge` | 2.4.0 | 通用设计技巧条目 |
+| blender-tips | `knowledge` | 2.4.0 | 43 篇 Blender 技巧页；AGENTS 由模板生成 |
 | weread-budget-extension | `knowledge` | 2.4.0 | MV3 + 平台版双端 |
 | workbuddy-skills | `skills` | 2.3.2 | SKILL.md 独立契约 |
 | rive-tips | `link-only` | 2.4.0 | 保留 docs → references 快照同步 |
