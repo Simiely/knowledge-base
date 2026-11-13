@@ -1,5 +1,27 @@
 # CHANGELOG
 
+## v1.1.0 — 2026-11-13
+
+规范版本可被机器读取；知识库自身与四个消费仓库同步升级到 repo-kit 2.4.0。
+
+### 新增
+
+- `模板库/单项目规范/spec.json`：规范版本真源（当前 `2.0.0`），配套 `CHANGELOG.md` 与 `migrations/v2.0.0.md`。
+- `模板库/单项目规范/audit-spec.ps1`：扫描各仓库 `schema/kit.lock.json` 的 `spec_version`，输出 `current / behind / v1 / legacy / invalid / newer`，支持 `-Json`。
+- 各仓库 `schema/kit.lock.json` 新增 `spec_version` 字段，任意程序读该字段即可判断按哪一版规范整理。
+- `用户库/仓库盘点表.md` 新增「规范版本」列，并回填四个仓库的文档基线。
+
+### 变更
+
+- vendored `模板库/repo-kit/` 升级到 `2.4.0`：安装器写入 `spec_version`，`check_repo.py` 新增 SPEC 校验（缺字段 WARN；格式非法、主版本落后、高于校验器支持 ERROR；次版本落后 WARN）。
+- 知识库自身 `link-only` kit 从 2.3.2 升级到 2.4.0，锁内写入 `spec_version: 2.0.0`。
+- design-tips / home-inventory / EverythingCmdPal / weread-budget-extension 升级到 kit 2.4.0，`spec_version` 均为 `2.0.0`。
+
+### 验证
+
+- 知识库自检：`REPO CHECK: PASS`（4 条既有 LINK_DIR WARN）、`KIT LOCK: PASS (v2.4.0, spec=2.0.0, profile=link-only)`。
+- 四个消费仓库三项检查全部 PASS。
+
 ## v1.0.0 — 2026-11-12
 
 建立「规范 + 新项目模板 + repo-kit」三层上游。
