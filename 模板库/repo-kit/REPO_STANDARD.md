@@ -103,7 +103,7 @@ CI 细节约定：
 | design-tips | `knowledge` | 2.4.0 | 通用设计技巧条目 |
 | weread-budget-extension | `knowledge` | 2.4.0 | MV3 + 平台版双端 |
 | workbuddy-skills | `skills` | 2.3.2 | SKILL.md 独立契约 |
-| rive-tips | `link-only` | 2.3.2 | 保留 docs → references 快照同步 |
+| rive-tips | `link-only` | 2.4.0 | 保留 docs → references 快照同步 |
 
 ## 4. 不统一的内容模型
 
