@@ -99,6 +99,7 @@ CI 细节约定：
 | 仓库 | Profile | 工具版本 | 说明 |
 |---|---|---|---|
 | EverythingCmdPal | `monorepo` | 2.4.0 | 插件文档按 include 白名单扫描 |
+| taskbar-drawer | `monorepo` | 2.4.0 | 单应用；AGENTS 由模板生成，DEVELOPMENT 保持根文档 |
 | home-inventory | `knowledge` | 2.4.0 | 含 pitfall 页 |
 | design-tips | `knowledge` | 2.4.0 | 通用设计技巧条目 |
 | weread-budget-extension | `knowledge` | 2.4.0 | MV3 + 平台版双端 |
