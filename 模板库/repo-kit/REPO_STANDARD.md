@@ -1,7 +1,7 @@
-# REPO_STANDARD.md — 仓库统一标准 v1.0.0
+# REPO_STANDARD.md — 仓库统一标准 v2.0.0
 
-日期：2026-11-11
-配套工具：repo-kit v2.3.2
+日期：2026-11-13
+配套工具：repo-kit v2.4.0
 
 本标准的目的是让多个仓库**用同一套契约和工具链验收**，而不是把所有仓库改成同一种内容结构。
 统一的是「怎么检查」，不是「写什么」。
@@ -51,15 +51,19 @@ pwsh tools/update-repo-kit.ps1 -Check                # 版本锁
 ```json
 {
   "kit": "repo-kit",
-  "version": "2.3.2",
+  "version": "2.4.0",
+  "spec_version": "2.0.0",
   "profile": "monorepo",
-  "installed": "2026-11-11",
+  "installed": "2026-11-13",
   "files": {
     "tools/repo-kit/check_repo.py": "sha256:...",
     "schema/frontmatter.schema.json": "sha256:..."
   }
 }
 ```
+
+`spec_version` 是该仓库所遵循的**规范版本**（见 `../单项目规范/spec.json`），
+与工具版本 `version` 独立；任何程序读这一个字段即可判断仓库按哪一版规范整理。
 
 升级只能通过 `update-repo-kit.ps1`，禁止手工复制脚本；`-Check` 哈希不一致即失败。
 锁里的哈希按 **LF 归一化** 计算，Windows 的 CRLF checkout 与 Linux CI 得到同一个值。
@@ -94,9 +98,11 @@ CI 细节约定：
 
 | 仓库 | Profile | 工具版本 | 说明 |
 |---|---|---|---|
-| EverythingCmdPal | `monorepo` | 2.3.2 | 插件文档按 include 白名单扫描 |
+| EverythingCmdPal | `monorepo` | 2.4.0 | 插件文档按 include 白名单扫描 |
+| home-inventory | `knowledge` | 2.4.0 | 含 pitfall 页 |
+| design-tips | `knowledge` | 2.4.0 | 通用设计技巧条目 |
+| weread-budget-extension | `knowledge` | 2.4.0 | MV3 + 平台版双端 |
 | workbuddy-skills | `skills` | 2.3.2 | SKILL.md 独立契约 |
-| home-inventory | `knowledge` | 2.3.2 | 含 pitfall 页 |
 | rive-tips | `link-only` | 2.3.2 | 保留 docs → references 快照同步 |
 
 ## 4. 不统一的内容模型

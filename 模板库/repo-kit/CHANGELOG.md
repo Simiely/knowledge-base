@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.4.0] - 2026-11-13
+
+### Added
+
+- `schema/kit.lock.json` 新增 `spec_version`：安装器从 `../单项目规范/spec.json`
+  读取并写入，任何程序可直接读取该字段判断仓库按哪一版规范整理。
+- `check_repo.py` 新增 SPEC 检查：缺字段 WARN、格式非法/主版本落后 ERROR、
+  次版本落后 WARN、高于校验器支持 ERROR。
+
+### Changed
+
+- `update-repo-kit.ps1` 的 `-Check` 输出与锁写入均包含 `spec_version`。
+
 ## [2.3.2] - 2026-11-11
 
 ### Added

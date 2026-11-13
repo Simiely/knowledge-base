@@ -25,7 +25,7 @@ python scripts/generate.py --root . --check
 ## 当前规模
 - 页面：13（critical=5）
 - 按 type：explanation=8, how-to=2, reference=3
-- 词表版本：2.3.2
+- 词表版本：2.4.0
 
 ## 边界
 机器只保结构、引用、新鲜度与真源标识符；语义正确性靠生成 + 人审。不要把本文件写成第二本规范。
