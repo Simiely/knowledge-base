@@ -1,5 +1,42 @@
 # CHANGELOG
 
+## v1.2.0 — 2026-11-16
+
+规范升 `2.1.0`、repo-kit 升 `2.5.0`。主题是**让已写下的条款真的生效**，不新增概念。
+
+起因：在 `dufs-gui` 上做接入审计时发现四项完成定义可被「空壳」满足——结构全绿、
+内容与代码相反（README 承诺了仓库无法产出的产物、AGENTS 教的实现已被替换、版本号硬编码
+13 处且已错一处）。随后抽样 3 个已接入仓库复核，定位到的问题不是条款不够，而是回路没通。
+
+### 变更
+
+- `check_repo.py`：`LINK_DIR` 不再产出告警。指向**存在**的目录是合法写法（GitHub 渲染目录列表），
+  真断链由 `LINK_BROKEN` 覆盖。实测该项在 blender-tips 常驻 170 条、知识库自身 4 条（都在
+  README 的仓库导航上），`PASS` 照旧——常驻 WARN 会训练出「WARN 可以无视」。
+- `check_repo.py`：`SPEC_VERSION` 升至 `2.1.0`。
+- `monorepo` profile：`include` / `entry_files` 补 `DEVELOPMENT.md`。此前四件套之一
+  **从不进扫描范围**，「> 200 行拆 docs/」的阈值等于没写。
+- 模板 CI（`monorepo` / `skills`）：加 `fetch-depth: 0` 与 PR-only 的 `--changed-since`。
+  缺这两处时 `sources.json` 的 `co_change` 永不触发——kit 里唯一能发现「代码改了文档没改」
+  的机制，在 11 个已接入仓库里全部没跑起来。`EverythingCmdPal` 是唯一手工绕过此缺失的。
+- `REPO_STANDARD.md`：1.3 补 co-change 命令与前提，1.5 补 `fetch-depth` / `paths:` /
+  「WARN 不是免死金牌」的判定口径，§6 接入清单补「taxonomy 必须覆盖四件套」。
+- `单项目规范`：`spec.json` → `2.1.0`，新增 `migrations/v2.1.0.md`，README 的完成定义段
+  补「四项全绿的含义要说准」。
+
+### 自检
+
+- 知识库自身（`link-only`）：`REPO CHECK: PASS`，**WARN 4 → 0**（4 条全是 README 目录导航的 `LINK_DIR`）。
+- kit：49 项单测 OK；`drift_probe` 8/8；`GENERATE CHECK: PASS`。
+- 脚手架 smoke：三个 profile 全部 `PASS` + `GENERATE CHECK: PASS`；反向对照注入
+  `DEVELOPMENT.md` 断链后如期报 `LINK_BROKEN`。
+- 已接入仓库跑新校验器：`SPEC_OUTDATED` 每仓库恰好 1 条（提示可迁移），LINK_DIR 归零。
+
+### 迁移
+
+- 11 个已接入仓库按 [`migrations/v2.1.0.md`](模板库/单项目规范/migrations/v2.1.0.md)
+  分两步升级：重装 kit、taxonomy 补 `DEVELOPMENT.md`。未升级者行为不变。
+
 ## v1.1.0 — 2026-11-13
 
 规范版本可被机器读取；知识库自身与四个消费仓库同步升级到 repo-kit 2.4.0。

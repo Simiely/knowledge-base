@@ -1,7 +1,7 @@
-# REPO_STANDARD.md — 仓库统一标准 v2.0.0
+# REPO_STANDARD.md — 仓库统一标准 v2.1.0
 
-日期：2026-11-13
-配套工具：repo-kit v2.4.0
+日期：2026-11-16
+配套工具：repo-kit v2.5.0
 
 本标准的目的是让多个仓库**用同一套契约和工具链验收**，而不是把所有仓库改成同一种内容结构。
 统一的是「怎么检查」，不是「写什么」。
@@ -41,6 +41,16 @@ python tools/repo-kit/generate.py --root . --check   # 仅生成型 profile
 pwsh tools/update-repo-kit.ps1 -Check                # 版本锁
 ```
 
+PR 里再跑一次带变更集的检查（同 PR co-change 的唯一触发方式）：
+
+```bash
+python tools/repo-kit/check_repo.py --root . --changed-since origin/main
+```
+
+不带 `--changed-since` 时变更集为空，`sources.json` 的 `co_change` 与
+`TRUTH_DOCS_NOT_UPDATED` 整段跳过——「真源改了文档没改」不会被发现。
+`--changed-since` 依赖 git 历史，CI 里必须 `fetch-depth: 0`。
+
 退出码：`0` 通过，`1` 有不变量失败，`2` 用法/依赖错误。
 输出：默认文本；`--json`、`--format sarif|github` 对所有仓库一致。
 
@@ -51,10 +61,10 @@ pwsh tools/update-repo-kit.ps1 -Check                # 版本锁
 ```json
 {
   "kit": "repo-kit",
-  "version": "2.4.0",
-  "spec_version": "2.0.0",
+  "version": "2.5.0",
+  "spec_version": "2.1.0",
   "profile": "monorepo",
-  "installed": "2026-11-13",
+  "installed": "2026-11-16",
   "files": {
     "tools/repo-kit/check_repo.py": "sha256:...",
     "schema/frontmatter.schema.json": "sha256:..."
@@ -76,11 +86,20 @@ pwsh tools/update-repo-kit.ps1 -Check                # 版本锁
 2. 跑 `check_repo.py`（以及生成型 profile 的 `generate.py --check`）。
 3. 跑 `update-repo-kit.ps1 -Check`。
 
+PR 事件再加一步 `--changed-since`（见 1.3），否则同 PR co-change 永远不触发。
+
 CI 细节约定：
 
+- `actions/checkout` 必须 `fetch-depth: 0`，否则 `--changed-since` 拿不到基分支历史，
+  变更集退化为空集，且**不会报错**——这是「检查写了但从不生效」的典型形态。
+- PR 的 `paths:` 过滤器要包含 `DEVELOPMENT.md`、`CHANGELOG.md`，否则只改门面文件的
+  PR 不会触发文档检查。
 - 内部链接检查（lychee 等）必须排除 `_template.md` 这类占位文件，否则模板里的示例链接会被当断链。
 - SARIF 上传在未启用 GitHub Advanced Security 的私有仓库会报 `Resource not accessible`；
   上传步骤用 `continue-on-error: true`，不阻塞文档检查本身。
+- `PASS` 只代表 `ERROR=0`，**WARN 不计入判定**。若某条规则在单仓库常驻几十上百条
+  （v2.4.0 的 `LINK_DIR` 即如此），它已经失效：要么修正规则，要么明确降为 INFO，
+  不要靠「反正只是 WARN」长期挂着——那会训练出无视 WARN 的习惯，连带淹掉真信号。
 
 ## 2. Profiles
 
@@ -109,6 +128,10 @@ CI 细节约定：
 | weread-budget-extension | `knowledge` | 2.4.0 | MV3 + 平台版双端 |
 | workbuddy-skills | `skills` | 2.4.0 | SKILL.md 独立契约；15 个技能（13 在用 + 2 归档） |
 | rive-tips | `link-only` | 2.4.0 | 保留 docs → references 快照同步 |
+
+上表是**各仓库当前安装的工具版本**，不是应有版本。v2.5.0 发布后，未升级的仓库会收到一条
+`SPEC_OUTDATED`（WARN，每仓库一条，提示有迁移可用）；升级步骤见
+`../单项目规范/migrations/v2.1.0.md`。
 
 ## 4. 不统一的内容模型
 
@@ -140,5 +163,7 @@ CI 细节约定：
 - [ ] 从 kit 复制 `frontmatter.schema.json`（有 skills 时再复制 `skills.schema.json`）
 - [ ] 复制 `tools/update-repo-kit.ps1`，选择 profile，生成 `kit.lock.json`
 - [ ] 加 `requirements.txt`：PyYAML、markdown-it-py、jsonschema
-- [ ] 加 CI：check + generate --check（如适用）+ lock check
+- [ ] `taxonomy.json` 的 `include` 与 `entry_files` 覆盖**四件套**（`README` / `AGENTS` /
+      `DEVELOPMENT` / `CHANGELOG`），否则四件套的体量阈值永远不会被检查
+- [ ] 加 CI：check + `--changed-since`（PR 事件）+ generate --check（如适用）+ lock check
 - [ ] 在 `AGENTS.md` 写清入口、命令与边界

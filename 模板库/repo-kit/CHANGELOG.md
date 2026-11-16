@@ -1,5 +1,29 @@
 # Changelog
 
+## [2.5.0] - 2026-11-16
+
+### Changed
+
+- `LINK_DIR` 不再产出告警：**指向一个存在的目录是合法写法**（GitHub 渲染目录列表，
+  README/DEVELOPMENT 索引源码目录常用），真断链仍由 `LINK_BROKEN` 覆盖。
+  实测该项在 blender-tips 单仓 170 条、knowledge-base 自身 4 条（都在 README 的仓库导航上），
+  常驻 WARN 会训练出「WARN 可以无视」的习惯，进而淹掉 `ORPHAN`、`PITFALL_*` 这类真信号。
+- monorepo profile 的 `include` 与 `entry_files` 补 `DEVELOPMENT.md`：此前四件套之一
+  **从不进入扫描范围**，「DEVELOPMENT > 200 行拆 docs/」的阈值实际未生效。
+  归入 `entry_files`（与 skills profile 一致）：门面文件不要求 frontmatter，但链接参与检查。
+
+### Added
+
+- 模板 CI（`monorepo` / `skills`）新增 `fetch-depth: 0` 与 PR-only 的 `--changed-since` 步骤：
+  `sources.json` 的 `co_change` 此前因变更集恒为空而**永不触发**，是 kit 里唯一能发现
+  「代码改了文档没改」的机制。`EverythingCmdPal` 已手工绕过此缺失，现收进模板。
+
+### Compatibility
+
+- 判定逻辑的改变只**减少** WARN，不新增 ERROR；未装新 kit 的仓库行为不变。
+- `DEVELOPMENT.md` 开始被检查后，存量仓库可能暴露此前隐藏的断链。
+  不想改变现状的仓库可不更新 `schema/taxonomy.json`（仓库自有文件，安装器不覆盖）。
+
 ## [2.4.0] - 2026-11-13
 
 ### Added

@@ -206,7 +206,7 @@ related: ["code.config.retry:depends-on"]
 | `SKILL_NAME_DIR` | 技能 name 与目录名不一致 | 改名或改目录，保持二者一致 |
 | `SKILL_NAME_DUP` | 两个技能用了同一个 name | 改成唯一 name |
 | `SKILL_DESC_SHORT` | description 太短 | 写清触发词 + 适用对象 + 能力摘要 |
-| `LINK_BROKEN` / `LINK_DIR` / `ANCHOR_BROKEN` | 断链 / 指向目录（WARN）/ 锚点不存在 | 修链接；目录链接确认不是误链 |
+| `LINK_BROKEN` / `ANCHOR_BROKEN` | 断链 / 锚点不存在 | 修链接或标题。**指向存在的目录不报错**（v2.5.0 起），GitHub 会渲染目录列表 |
 | `REL_FORMAT` / `REL_VOCAB` / `REL_TARGET` | 关系格式/词表/目标错 | 用 `id:rel`，目标必须存在 |
 | `REL_SELF` | 页面引用自己（WARN） | 删掉自引用 |
 | `REL_BOTH_SIDES` | 方向性关系写在两侧 | 删一侧，反向派生 |
