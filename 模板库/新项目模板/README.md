@@ -3,12 +3,15 @@
 > 开新仓库时不用从零搭目录：选一个 profile，跑一条命令，得到一个能直接通过检查的干净骨架。
 > 规范本身见 [单项目规范](../单项目规范/README.md)；机器工具来源见 [repo-kit](../repo-kit/README.md)。
 
-## 三个 profile
+## 四个 profile
+
+模板版本：**1.1.0**（`VERSION`）。1.0.x 只有前三个；1.1.0 补 `knowledge` 并开始记录版本号。
 
 | Profile | 适用 | 生成后包含 |
 |---|---|---|
-| `monorepo` | 代码仓库 / 多插件仓库 | 4 文件 + `docs/` + 生成索引 + CI |
+| `monorepo` | 代码仓库 / 多插件仓库 | 4 文件 + `docs/` + 生成索引 + CI + 真源映射 |
 | `skills` | 技能仓库 | 4 文件 + `skills/` 契约 + references 只查链接 + CI |
+| `knowledge` | 知识库 / 内容仓（无代码真源） | 4 文件 + `docs/` + 生成索引 + CI（不跑同 PR co-change） |
 | `link-only` | 已有内容管线的文档仓 | 4 文件 + 链接/锚点检查 + CI，不要求 frontmatter |
 
 三个 profile 都带：`README.md`、`AGENTS.md`、`DEVELOPMENT.md`、`CHANGELOG.md`、

@@ -1,7 +1,7 @@
 # REPO_STANDARD.md — 仓库统一标准 v2.1.0
 
 日期：2026-11-16
-配套工具：repo-kit v2.5.1
+配套工具：repo-kit v2.5.3
 
 本标准的目的是让多个仓库**用同一套契约和工具链验收**，而不是把所有仓库改成同一种内容结构。
 统一的是「怎么检查」，不是「写什么」。
@@ -61,8 +61,8 @@ python tools/repo-kit/check_repo.py --root . --changed-since origin/main
 ```json
 {
   "kit": "repo-kit",
-  "version": "2.5.1",
-  "spec_version": "2.1.1",
+  "version": "2.5.3",
+  "spec_version": "2.1.2",
   "profile": "monorepo",
   "installed": "2026-11-16",
   "files": {
@@ -80,17 +80,29 @@ python tools/repo-kit/check_repo.py --root . --changed-since origin/main
 
 ### 1.5 CI
 
-同一套模板，至少三步：
+**按「有没有真源」分两档**，不要一套抄到底。判据：`schema/sources.json` 存在且 `code` 非空。
 
-1. 安装 `requirements.txt`。
-2. 跑 `check_repo.py`（以及生成型 profile 的 `generate.py --check`）。
-3. 跑 `update-repo-kit.ps1 -Check`。
+**A 档 · 有真源（`monorepo` / `skills`）**
 
-PR 事件再加一步 `--changed-since`（见 1.3），否则同 PR co-change 永远不触发。
+1. 安装文档依赖（**显式装，不要 `-r requirements.txt`**：代码仓的这份文件是运行/构建清单）。
+2. `check_repo.py --root .`
+3. PR 事件：`check_repo.py --root . --changed-since origin/<base>`（见 1.3）。
+4. `generate.py --root . --check`
+5. `pwsh tools/update-repo-kit.ps1 -Check`
+
+**B 档 · 无真源（`knowledge` / `link-only`）**
+
+1. `python -m pip install -r requirements.txt`（这类仓库的 `requirements.txt` 就是文档依赖）。
+2. `check_repo.py --root .`
+3. `generate.py --root . --check`（link-only 不适用）
+4. `pwsh tools/update-repo-kit.ps1 -Check`
+
+不需要 `fetch-depth: 0` 与 `--changed-since`——没有 `sources.json` 时它们是空转，
+只会增加一个「看起来在检查」的假动作。
 
 CI 细节约定：
 
-- `actions/checkout` 必须 `fetch-depth: 0`，否则 `--changed-since` 拿不到基分支历史，
+- A 档的 `actions/checkout` 必须 `fetch-depth: 0`，否则 `--changed-since` 拿不到基分支历史，
   变更集退化为空集，且**不会报错**——这是「检查写了但从不生效」的典型形态。
 - PR 的 `paths:` 过滤器要包含 `DEVELOPMENT.md`、`CHANGELOG.md`，否则只改门面文件的
   PR 不会触发文档检查。
@@ -100,6 +112,23 @@ CI 细节约定：
 - `PASS` 只代表 `ERROR=0`，**WARN 不计入判定**。若某条规则在单仓库常驻几十上百条
   （v2.4.0 的 `LINK_DIR` 即如此），它已经失效：要么修正规则，要么明确降为 INFO，
   不要靠「反正只是 WARN」长期挂着——那会训练出无视 WARN 的习惯，连带淹掉真信号。
+
+### 1.6 baseline 的生命周期
+
+baseline 是**临时脚手架**，不是长期配置：它压制的是「已知但还没修」的问题。
+
+- 进入：存量仓库首接入时 `--write-baseline schema/check-baseline.json`（建议 `--baseline-format v2`）。
+- 退出：规则收紧或静音后，旧条目会变成压制「已消失问题」的死配置。此时跑
+
+  ```bash
+  python tools/repo-kit/check_repo.py --root . --prune-baseline schema/check-baseline.json
+  ```
+
+  它按**全量结果**重算，删掉不再命中的条目并打印清单。
+- 清算：条目降到 0 就**删文件**并去掉 CI 的 `--baseline` 参数。
+
+为什么写进规范：`blender-tips` 的 baseline 有 170 条，全是 v2.5.0 已静音的 `LINK_DIR`。
+一份压制「已消失问题」的 baseline 比没有更危险——它让人以为还有待办，也掩盖真正的新增项。
 
 ## 2. Profiles
 
@@ -112,6 +141,9 @@ CI 细节约定：
 
 `link-only` 用于 rive-tips 这类仓库：文档不带 frontmatter，内容真源由它自己的
 `tools/sync-skill.ps1 -Check` 保证；repo-kit 只补链接与入口检查。
+
+四个 profile 的骨架都在 `新项目模板/profiles/`；`knowledge` 自模板 **1.1.0** 起才提供
+（此前规范列了它、模板却没有，导致这类仓库的 CI 只能手写）。
 
 ## 3. 当前仓库清单
 
@@ -146,6 +178,9 @@ CI 细节约定：
 
 1. 在 kit 源仓库改完并跑通 `check_repo`、`generate --check`、`drift_probe`、单元测试。
 2. 升 `schema/taxonomy.json` 的 `version`，写 CHANGELOG。
+3. **改规范版本时先同步 `SPEC_VERSION`**：`check_repo.py` 里的常量是硬编码的（它要能离线运行，
+   不读 `spec.json`）。忘了改会立刻报 `SPEC_NEWER`——自己的仓库先红一次。
+   顺序：改 `spec.json` → 改 `SPEC_VERSION` → 重算 `kit.lock.json` 哈希 → 再跑检查。
 3. 在每个仓库运行：
    ```powershell
    pwsh tools/update-repo-kit.ps1 -Source <kit 路径> -Profile <profile>

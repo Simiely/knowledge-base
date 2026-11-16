@@ -4,6 +4,31 @@
 kit 描述“用哪个校验器检查”。仓库通过 `schema/kit.lock.json` 的 `spec_version`
 字段声明自己按哪一版规范整理。
 
+## [2.1.2] - 2026-11-16
+
+补两处「规范写了、执行面没跟上」的地方。由 `blender-tips` 真实升级暴露。
+
+### Changed
+
+- **CI 按「有没有真源」分两档**（`REPO_STANDARD` 1.5）：
+  A 档（`monorepo` / `skills`，有 `sources.json`）保留 `fetch-depth: 0` + PR 的 `--changed-since`
+  + 显式装文档依赖；B 档（`knowledge` / `link-only`，无真源）只跑 check + generate + lock。
+  原文是一套通用条款，结果 knowledge 仓库抄了三个空转步骤——`--changed-since` 在没有
+  `sources.json` 时什么都不会发生，只是让人误以为在检查。
+- **补 `knowledge` profile 的骨架**：规范第 2 节一直列着它，但 `新项目模板/profiles/` 只有
+  三个，这类仓库只能手写 CI。模板 1.1.0 补齐，同时开始记录模板版本号。
+
+### Added
+
+- **baseline 的生命周期**（`REPO_STANDARD` 1.6）：进入（`--write-baseline`）→ 退出
+  （`--prune-baseline`）→ 清算（删文件、去掉 CI 参数）。规则收紧或静音后必须跑一次，
+  否则 baseline 会变成压制「已消失问题」的死配置——`blender-tips` 的 170 条就是这种情况。
+
+### Migration
+
+- 无需迁移。`knowledge` 仓库下次升级时可直接改用模板的 CI 形态；
+  有 baseline 的仓库跑一次 `--prune-baseline` 清掉失效条目。
+
 ## [2.1.1] - 2026-11-16
 
 只有澄清，没有新增要求。两处原文与工具实现不一致，2.5.1 把工具改成与原文一致。

@@ -1,5 +1,5 @@
 {
-  "version": "2.5.1",
+  "version": "2.5.3",
   "name": "knowledge-base",
   "include": [
     "README.md",
@@ -13,13 +13,47 @@
   "exempt_basenames": [],
   "slugger": "github",
   "summary_policy": "off",
-  "link_only_files": ["*.md", "**/*.md"],
-  "types": ["tutorial", "how-to", "reference", "explanation"],
-  "kinds": ["standard", "decision", "index", "note", "glossary", "report", "pitfall"],
-  "statuses": ["draft", "active", "resolved", "superseded", "archived"],
-  "tiers": ["normal", "critical"],
-  "confidences": ["low", "medium", "high"],
-  "topics": ["experience", "templates", "governance", "standards"],
+  "link_only_files": [
+    "*.md",
+    "**/*.md"
+  ],
+  "types": [
+    "tutorial",
+    "how-to",
+    "reference",
+    "explanation"
+  ],
+  "kinds": [
+    "standard",
+    "decision",
+    "index",
+    "note",
+    "glossary",
+    "report",
+    "pitfall"
+  ],
+  "statuses": [
+    "draft",
+    "active",
+    "resolved",
+    "superseded",
+    "archived"
+  ],
+  "tiers": [
+    "normal",
+    "critical"
+  ],
+  "confidences": [
+    "low",
+    "medium",
+    "high"
+  ],
+  "topics": [
+    "experience",
+    "templates",
+    "governance",
+    "standards"
+  ],
   "relations": {
     "depends-on": {
       "direction": "directed",

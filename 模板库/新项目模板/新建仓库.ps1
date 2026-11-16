@@ -22,7 +22,7 @@ param(
     [string]$Name,
 
     [Parameter(Mandatory = $true)]
-    [ValidateSet('monorepo', 'skills', 'link-only')]
+    [ValidateSet('monorepo', 'skills', 'knowledge', 'link-only')]
     [string]$Profile,
 
     [Parameter(Mandatory = $true)]

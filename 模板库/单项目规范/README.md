@@ -1,6 +1,6 @@
 # 单项目（单仓库）文档规范 · 使用说明
 
-> 规范版本 v2.1.1 · 2026-11-16 · 变更见 [CHANGELOG.md](CHANGELOG.md)
+> 规范版本 v2.1.2 · 2026-11-16 · 变更见 [CHANGELOG.md](CHANGELOG.md)
 
 > 让**单个仓库**的内容模块化、清晰合理、可快速提取，并与 knowledge-base 无缝衔接。
 > 适用：所有个人项目仓库（AE 脚本 / C4D 插件 / Blender 插件 / Web 项目 / 小程序）。

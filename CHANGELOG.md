@@ -1,5 +1,31 @@
 # CHANGELOG
 
+## v1.2.3 — 2026-11-16
+
+规范 `2.1.2` / repo-kit `2.5.3` / 新项目模板 `1.1.0`。补三处**执行面**缺口，条款语义未变。
+
+### 补齐
+
+- **模板补 `knowledge` profile**：规范第 2 节一直列着这个 profile，但 `profiles/` 只有三个，
+  这类仓库（home-inventory / design-tips / blender-tips / weread）的 CI 只能手写。
+  同时给模板加了 `VERSION`（1.1.0 起记录）。
+- **`check_repo.py --prune-baseline`**：清理 baseline 中已不再命中的条目。
+  `blender-tips` 的 170 条 `LINK_DIR` 就是典型——规则静音后它们成了压死问题的死配置。
+- **`REPO_STANDARD` 1.5 按 `profile` 分两档**：有真源（monorepo/skills）跑
+  `fetch-depth: 0` + `--changed-since` + 显式依赖；无真源（knowledge/link-only）只跑
+  check + generate + lock。原文一套通用条款，导致 knowledge 仓抄了三个空转步骤。
+
+### 顺带
+
+- `REPO_STANDARD` 新增 1.6「baseline 的生命周期」，§5 升级流程补一条：
+  改 `spec.json` 必须同步 `check_repo.py` 的 `SPEC_VERSION`（硬编码，忘了会先把自己的仓库报红）。
+
+### 验收
+
+- kit：`REPO CHECK PASS`、`GENERATE CHECK PASS`、`drift_probe 8/8`、49 项单测 OK。
+- 四个 profile 脚手架 smoke 全 PASS（`knowledge` 为 pages=1）。
+- `--prune-baseline` 双向验证：失效条目被删（2→0），仍命中的被保留（1→1）。
+
 ## v1.2.2 — 2026-11-16
 
 repo-kit `2.5.2`：修 `generate.py` 的生成范围判定。
