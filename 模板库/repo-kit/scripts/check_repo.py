@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""repo-kit v2.5 仓库不变量校验器。
+"""repo-kit 仓库不变量校验器。
 
 设计目标：
 - 内容契约用 JSON Schema 表达，不用手写正则解析 YAML；
@@ -47,6 +47,7 @@ LINK_SCHEMES = ("http://", "https://", "mailto:", "tel:", "javascript:", "data:"
 ADR_RE = re.compile(r"ADR-(\d{4})-[a-z0-9-]+\.md$")
 ID_RE = re.compile(r"^[a-z0-9]+(\.[a-z0-9-]+)+$")
 PITFALL_FIELDS = ("summary", "symptom", "cause", "detect", "avoid", "recover", "applies_to", "severity")
+KIT_VERSION = "2.6.0"
 SPEC_VERSION = "2.1.2"
 
 
@@ -471,7 +472,7 @@ def check_spec(root: Path, report: Report) -> None:
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description="repo-kit v2.5.3 不变量校验器")
+    ap = argparse.ArgumentParser(description=f"repo-kit v{KIT_VERSION} 不变量校验器")
     ap.add_argument("--root", default=".", help="仓库根目录")
     ap.add_argument("--json", action="store_true", help="JSON 输出（等价于 --format json）")
     ap.add_argument("--format", choices=["text", "json", "sarif", "github"], default="text", help="输出格式")

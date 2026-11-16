@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""repo-kit v2.5 生成器。
+"""repo-kit 生成器。
 
 生成而不是手写：
 - AGENTS.md：AI/人的唯一入口，保持薄
@@ -397,7 +397,7 @@ def build_backlinks(pages: dict[str, dict], tax: dict) -> str:
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description="repo-kit v2.5.2 生成器")
+    ap = argparse.ArgumentParser(description=f"repo-kit v{cr.KIT_VERSION} 生成器")
     ap.add_argument("--root", default=".")
     ap.add_argument("--write", action="store_true", help="写入生成文件")
     ap.add_argument("--check", action="store_true", help="只检查生成文件是否最新")

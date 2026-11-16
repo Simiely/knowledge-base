@@ -31,7 +31,7 @@ schema/
 不再把 kit 脚本放在 `scripts/`；`scripts/` 只放仓库自己的业务脚本。
 
 例外：**kit 源仓库自身**仍把源脚本放在 `scripts/`，它是分发源；消费仓库一律安装到
-`tools/repo-kit/`。`drift_probe.py` 只存在于 kit 源仓库，不随消费仓库分发。
+`tools/repo-kit/`。`drift_probe.py` 与 `release.py` 只存在于 kit 源仓库，不随消费仓库分发。
 
 ### 1.3 固定命令
 
@@ -177,17 +177,21 @@ baseline 是**临时脚手架**，不是长期配置：它压制的是「已知�
 ## 5. 升级流程
 
 1. 在 kit 源仓库改完并跑通 `check_repo`、`generate --check`、`drift_probe`、单元测试。
-2. 升 `schema/taxonomy.json` 的 `version` 与 `VERSION`，写 CHANGELOG。
-3. **版本字符串有三处硬编码，发布时一起改**（漏掉不报错，只是让人看到旧版本）：
+2. 发版用脚本，不要手改版本号：
 
-   | 位置 | 漏改的后果 |
-   |---|---|
-   | `spec.json` 的 `version` ↔ `check_repo.py` 的 `SPEC_VERSION` | 立刻 `SPEC_NEWER`，自己的仓库先红（能自愈，忘不了） |
-   | 两个脚本的 `argparse` 描述（`repo-kit vX.Y.Z ...`） | **不报错**：`--help` 长期停留旧版本 |
-   | 两个脚本的模块 docstring 首行 | 同上，读代码的人以为没升级 |
+   ```bash
+   python scripts/release.py --version 2.7.0          # 同步 taxonomy + 脚本 + 跑测试
+   python scripts/release.py --version 2.7.0 --min-kit 2.7.0   # 需要抬 spec 的 min_kit 时
+   python scripts/release.py --check                  # 只校验（可进 CI）
+   ```
 
-   指定版本的**权威来源只有一个**：`schema/kit.lock.json` 的 `version`。脚本里的是说明文字，
-   别拿它当版本依据——但也别让它撒谎。
+   **版本的唯一定义处**是 `schema/taxonomy.json` 的 `version`——安装器与脚手架都读它，
+   `check_repo.py` 的 `KIT_VERSION` 由 `release.py` 写入，`generate.py` 只引用不拥有。
+   早先的 `VERSION` 文件已删除：它和 `taxonomy.version` 分别喂给脚手架与安装器，
+   两者不一致时同版本 kit 会产出两个版本号，且无任何检查能发现。
+
+3. 跨版本号的一处仍需手工确认：`spec.json` 的 `version` ↔ `check_repo.py` 的 `SPEC_VERSION`
+   （规范版本，不是 kit 版本）。漏改会立刻 `SPEC_NEWER`，自己的仓库先红。
 4. 在每个仓库运行：
    ```powershell
    pwsh tools/update-repo-kit.ps1 -Source <kit 路径> -Profile <profile>

@@ -44,11 +44,12 @@ $targetDir = [System.IO.Path]::GetFullPath($Target)
 
 if (-not (Test-Path -LiteralPath $baseDir)) { throw "base not found: $baseDir" }
 if (-not (Test-Path -LiteralPath $profileDir)) { throw "profile not found: $profileDir" }
-if (-not (Test-Path -LiteralPath ([System.IO.Path]::Combine($kitDir, 'VERSION')))) { throw "kit not found: $kitDir" }
+if (-not (Test-Path -LiteralPath ([System.IO.Path]::Combine($kitDir, 'schema', 'taxonomy.json')))) { throw "kit not found: $kitDir" }
 
 $ownerName = $Owner.TrimStart('@').ToLower()
 $date = Get-Date -Format 'yyyy-MM-dd'
-$kitVersion = (Get-Content -LiteralPath ([System.IO.Path]::Combine($kitDir, 'VERSION')) -Raw -Encoding ASCII).Trim()
+# 版本与安装器同源：读 kit 的 taxonomy.json，不再单独维护 VERSION 文件
+$kitVersion = (Get-Content -LiteralPath ([System.IO.Path]::Combine($kitDir, 'schema', 'taxonomy.json')) -Raw -Encoding UTF8 | ConvertFrom-Json).version
 
 if (Test-Path -LiteralPath $targetDir) {
     $existing = @(Get-ChildItem -LiteralPath $targetDir -Force)

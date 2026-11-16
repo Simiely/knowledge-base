@@ -1,5 +1,44 @@
 # Changelog
 
+## [2.6.0] - 2026-11-16
+
+结构收敛第一批：**版本号从「五处拷贝」变成「一处定义」**，并把 CI 模板的不一致修掉。
+起因：`generate.py --help` 停在 2.5.2 而 kit 已是 2.5.3，追下去发现根本问题是
+`VERSION`（脚手架读）与 `taxonomy.version`（安装器读）是两个独立来源，一旦不一致，
+同一版 kit 会产出两种版本号且无任何检查能发现。
+
+### Added
+
+- `scripts/release.py`：
+  - `--version X.Y.Z` 同步 `taxonomy.version` / `taxonomy.name` / `check_repo.py` 的
+    `KIT_VERSION`，可选抬 `spec.json` 的 `min_kit`；随后跑单测、`drift_probe`、
+    `check_repo`、`generate --check`；并在 CHANGELOG 插入空节。
+  - `--check` 只校验副本一致性，可进 CI。
+- 测试从 49 项增至 **61 项**，补的都是「改过但没测」的地方：
+  - `entry_files`：免 frontmatter、但链接仍被检查（2.5.0 的取舍）
+  - `generated_files` 三态：缺键=全生成 / 显式空=零生成 / 子集=只生成那些（2.5.2 的修复）
+  - `--prune-baseline`：失效条目删除、仍命中的保留（2.5.3 的新能力）
+  - **CI 模板四条语义不变量**（不是逐行比对）：校验器与锁步骤必在；`--changed-since`
+    必须配 `fetch-depth: 0`；`generate` 步骤只能出现在有生成器的 profile；
+    同档 profile 的依赖装法必须一致
+  - `release --check` 自身：版本漂移与 `VERSION` 文件复活都要被拦
+
+### Changed
+
+- **删除 `repo-kit/VERSION`**。脚手架改为读 `schema/taxonomy.json` 的 `version`，
+  与安装器同源。`KIT_VERSION` 只由 `check_repo.py` 拥有，`generate.py` 引用它。
+- 两个脚本的 `argparse` 描述改为运行时拼版本号，docstring 不再写版本——这类文字
+  不参与校验，写死一次就会漂。
+- **CI 模板统一**：`knowledge` 与 `link-only` 同属无真源档，此前一个用
+  `-r requirements.txt`、一个显式装三个包（两次独立修改的痕迹）。现统一为 `-r`，
+  步骤名也统一为 `Doc dependencies`。
+
+### Compatibility
+
+- 消费仓库无需改动，也不必重装：本版只改 kit 源仓库的版本管理与模板，
+  已装副本与其 `kit.lock` 仍然匹配。
+- 模板变化只影响**以后新建**的仓库；已存在仓库的 CI 保持原样（不受影响）。
+
 ## [2.5.3] - 2026-11-16
 
 补「baseline 生命周期」这个长期空档。由 `blender-tips` 真实升级暴露。

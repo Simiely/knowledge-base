@@ -1,6 +1,6 @@
 {
-  "version": "2.5.3",
-  "name": "repo-kit v2.5.3",
+  "version": "2.6.0",
+  "name": "repo-kit v2.6.0",
   "include": [],
   "context_files": [],
   "exempt_basenames": [],
@@ -13,12 +13,44 @@
     "min_description": 40
   },
   "link_only_files": [],
-  "types": ["tutorial", "how-to", "reference", "explanation"],
-  "kinds": ["standard", "decision", "index", "note", "glossary", "report", "pitfall"],
-  "statuses": ["draft", "active", "resolved", "superseded", "archived"],
-  "tiers": ["normal", "critical"],
-  "confidences": ["low", "medium", "high"],
-  "topics": ["auth", "config", "governance", "pricing", "onboarding"],
+  "types": [
+    "tutorial",
+    "how-to",
+    "reference",
+    "explanation"
+  ],
+  "kinds": [
+    "standard",
+    "decision",
+    "index",
+    "note",
+    "glossary",
+    "report",
+    "pitfall"
+  ],
+  "statuses": [
+    "draft",
+    "active",
+    "resolved",
+    "superseded",
+    "archived"
+  ],
+  "tiers": [
+    "normal",
+    "critical"
+  ],
+  "confidences": [
+    "low",
+    "medium",
+    "high"
+  ],
+  "topics": [
+    "auth",
+    "config",
+    "governance",
+    "pricing",
+    "onboarding"
+  ],
   "relations": {
     "depends-on": {
       "direction": "directed",
@@ -55,7 +87,13 @@
     "normal": 365,
     "critical": 90
   },
-  "entry_files": ["README.md", "REPO_STANDARD.md", "CONTRIBUTING.md", "CHANGELOG.md", "SECURITY.md"],
+  "entry_files": [
+    "README.md",
+    "REPO_STANDARD.md",
+    "CONTRIBUTING.md",
+    "CHANGELOG.md",
+    "SECURITY.md"
+  ],
   "generated_files": [
     "AGENTS.md",
     "llms.txt",
