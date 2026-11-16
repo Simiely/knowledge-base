@@ -1,5 +1,29 @@
 # Changelog
 
+## [2.5.2] - 2026-11-16
+
+一处会**静默覆盖手写文档**的语义错误。由 12 仓升级 dry-run 暴露。
+
+### Fixed
+
+- `generate.py` 区分「没声明 `generated_files`」与「显式声明为空」：
+
+  | taxonomy | 旧行为（2.5.1） | 新行为（2.5.2） |
+  |---|---|---|
+  | 缺 `generated_files` 键 | 全量生成 5 个文件 | 不变（兼容旧仓库） |
+  | `"generated_files": []` | **全量生成 5 个文件** | 一个都不生成 |
+
+  旧写法是 `set(tax.get("generated_files") or [])`，空列表与缺键等价，于是
+  `link-only` 这类「有手写 `AGENTS.md`、清单为空」的仓库一旦跑 `generate --write`
+  就会被 kit 的兜底模板覆盖。升级 dry-run 里 `rive-tips` 正是这样被冲掉，
+  并因此伪造出 4 条指向 `docs/usage.md` 的断链——**误报的根源是覆盖，不是链接本身**。
+
+### Compatibility
+
+- 现有消费仓不受影响：11 个已接入仓库要么缺键（旧行为不变），要么清单列了 5 个文件。
+- `check_repo.py` 未改动，只换 `generate.py`；重装后 `kit.lock.json` 里
+  `tools/repo-kit/generate.py` 的哈希会变，属预期。
+
 ## [2.5.1] - 2026-11-16
 
 两处「规范允许、工具不允许」的修复。均由 `dufs-gui` 接入时的 dry-run 暴露。
