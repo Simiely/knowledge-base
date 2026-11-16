@@ -177,19 +177,26 @@ baseline 是**临时脚手架**，不是长期配置：它压制的是「已知�
 ## 5. 升级流程
 
 1. 在 kit 源仓库改完并跑通 `check_repo`、`generate --check`、`drift_probe`、单元测试。
-2. 升 `schema/taxonomy.json` 的 `version`，写 CHANGELOG。
-3. **改规范版本时先同步 `SPEC_VERSION`**：`check_repo.py` 里的常量是硬编码的（它要能离线运行，
-   不读 `spec.json`）。忘了改会立刻报 `SPEC_NEWER`——自己的仓库先红一次。
-   顺序：改 `spec.json` → 改 `SPEC_VERSION` → 重算 `kit.lock.json` 哈希 → 再跑检查。
-3. 在每个仓库运行：
+2. 升 `schema/taxonomy.json` 的 `version` 与 `VERSION`，写 CHANGELOG。
+3. **版本字符串有三处硬编码，发布时一起改**（漏掉不报错，只是让人看到旧版本）：
+
+   | 位置 | 漏改的后果 |
+   |---|---|
+   | `spec.json` 的 `version` ↔ `check_repo.py` 的 `SPEC_VERSION` | 立刻 `SPEC_NEWER`，自己的仓库先红（能自愈，忘不了） |
+   | 两个脚本的 `argparse` 描述（`repo-kit vX.Y.Z ...`） | **不报错**：`--help` 长期停留旧版本 |
+   | 两个脚本的模块 docstring 首行 | 同上，读代码的人以为没升级 |
+
+   指定版本的**权威来源只有一个**：`schema/kit.lock.json` 的 `version`。脚本里的是说明文字，
+   别拿它当版本依据——但也别让它撒谎。
+4. 在每个仓库运行：
    ```powershell
    pwsh tools/update-repo-kit.ps1 -Source <kit 路径> -Profile <profile>
    pwsh tools/update-repo-kit.ps1 -Check
    python tools/repo-kit/check_repo.py --root .
    python tools/repo-kit/generate.py --root . --check
    ```
-4. 更新该仓库 `schema/taxonomy.json` 的 `version` 与新增词表（如 `pitfall`）。
-5. 提交时把 `schema/kit.lock.json` 一起带上。
+5. 更新该仓库 `schema/taxonomy.json` 的 `version` 与新增词表（如 `pitfall`）。
+6. 提交时把 `schema/kit.lock.json` 一起带上。
 
 ## 6. 新仓库接入清单
 
