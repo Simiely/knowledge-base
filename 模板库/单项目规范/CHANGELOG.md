@@ -4,6 +4,23 @@
 kit 描述“用哪个校验器检查”。仓库通过 `schema/kit.lock.json` 的 `spec_version`
 字段声明自己按哪一版规范整理。
 
+## [2.1.1] - 2026-11-16
+
+只有澄清，没有新增要求。两处原文与工具实现不一致，2.5.1 把工具改成与原文一致。
+
+### Clarified
+
+- `AGENTS.md`「可以是生成文件，也可以是手写正文」现在真的成立：`generate.py` 只生成
+  `taxonomy.generated_files` 里声明的文件。此前它无条件重写 `AGENTS.md`，手写仓库必红。
+- 接入清单不再要求往仓库的 `requirements.txt` 里塞文档依赖：CI 显式安装，
+  仓库的 `requirements.txt` 保持运行/构建语义。后者让代码仓库（如 `dufs-gui`，
+  只有 `pyinstaller==2.x`）按模板必失败。
+
+### Migration
+
+- 无需迁移。想改手写的仓库把 `AGENTS.md` 从 `generated_files` 去掉即可；
+  其余仓库行为不变。`spec.json` 的 `min_kit` 抬到 `2.5.1`。
+
 ## [2.1.0] - 2026-11-16
 
 修订依据：在 `dufs-gui` 上做接入审计时发现，规范的四项完成定义可以被「空壳」满足——

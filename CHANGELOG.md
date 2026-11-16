@@ -1,5 +1,25 @@
 # CHANGELOG
 
+## v1.2.1 — 2026-11-16
+
+规范 `2.1.1`、repo-kit `2.5.1`。两处「规范允许、工具不允许」的修复，均由 `dufs-gui` 接入的 dry-run 暴露。
+
+### 修复
+
+- `generate.py` 只生成 `taxonomy.generated_files` 声明的文件。此前它无条件重写 `AGENTS.md`，
+  手写 AGENTS 的仓库永远 `GENERATED_STALE`——与 REPO_STANDARD 1.1/4 直接冲突。
+- 模板 CI 显式安装文档依赖（`PyYAML` / `markdown-it-py` / `jsonschema`），不再
+  按仓库的 `requirements.txt` 装。代码仓的 `requirements.txt` 是运行/构建清单
+  （`dufs-gui` 只有 `pyinstaller==6.22.3`），照装会在 `check_repo.py` 报 `DEPENDENCY_MISSING`。
+- `monorepo` 的 `include` 补 `CHANGELOG.md`：它在 `exempt_basenames` 里却不在 `include` 里，
+  等于四件套中的 CHANGELOG 从不参与链接检查。
+
+### 迁移
+
+- 首个完整用户：`dufs-gui`（`bd399e3`）。`REPO CHECK PASS`（pages=11）、`GENERATE CHECK PASS`、
+  `KIT LOCK PASS`（v2.5.1, spec=2.1.1），同时纠正 8 处文档与代码相反的表述。
+- 其余 11 个已接入仓库无需改动；要改手写 AGENTS 的，把 `AGENTS.md` 从 `generated_files` 去掉即可。
+
 ## v1.2.0 — 2026-11-16
 
 规范升 `2.1.0`、repo-kit 升 `2.5.0`。主题是**让已写下的条款真的生效**，不新增概念。

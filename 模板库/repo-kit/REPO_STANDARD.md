@@ -1,7 +1,7 @@
 # REPO_STANDARD.md — 仓库统一标准 v2.1.0
 
 日期：2026-11-16
-配套工具：repo-kit v2.5.0
+配套工具：repo-kit v2.5.1
 
 本标准的目的是让多个仓库**用同一套契约和工具链验收**，而不是把所有仓库改成同一种内容结构。
 统一的是「怎么检查」，不是「写什么」。
@@ -61,8 +61,8 @@ python tools/repo-kit/check_repo.py --root . --changed-since origin/main
 ```json
 {
   "kit": "repo-kit",
-  "version": "2.5.0",
-  "spec_version": "2.1.0",
+  "version": "2.5.1",
+  "spec_version": "2.1.1",
   "profile": "monorepo",
   "installed": "2026-11-16",
   "files": {
@@ -162,8 +162,12 @@ CI 细节约定：
 - [ ] 建 `schema/`，写 `taxonomy.json`、`sources.json`
 - [ ] 从 kit 复制 `frontmatter.schema.json`（有 skills 时再复制 `skills.schema.json`）
 - [ ] 复制 `tools/update-repo-kit.ps1`，选择 profile，生成 `kit.lock.json`
-- [ ] 加 `requirements.txt`：PyYAML、markdown-it-py、jsonschema
+- [ ] 文档依赖**不要**写进仓库的 `requirements.txt`：模板 CI 已显式安装
+      `PyYAML` / `markdown-it-py` / `jsonschema`；仓库自己的 `requirements.txt`
+      只放运行/构建依赖（代码仓库常见只有打包工具）
 - [ ] `taxonomy.json` 的 `include` 与 `entry_files` 覆盖**四件套**（`README` / `AGENTS` /
       `DEVELOPMENT` / `CHANGELOG`），否则四件套的体量阈值永远不会被检查
+- [ ] `taxonomy.json` 的 `generated_files` 决定**生成范围**：`AGENTS.md` 打算手写就把它
+      从这个清单里去掉（`generate.py` 自 2.5.1 起尊重该清单）
 - [ ] 加 CI：check + `--changed-since`（PR 事件）+ generate --check（如适用）+ lock check
 - [ ] 在 `AGENTS.md` 写清入口、命令与边界

@@ -1,5 +1,29 @@
 # Changelog
 
+## [2.5.1] - 2026-11-16
+
+两处「规范允许、工具不允许」的修复。均由 `dufs-gui` 接入时的 dry-run 暴露。
+
+### Fixed
+
+- `generate.py` 只生成 `taxonomy.generated_files` 里声明过的文件，不再无条件重写 `AGENTS.md`。
+  此前 `AGENTS.md` 被硬编码进输出字典，导致**手写 AGENTS 的仓库永远 `GENERATED_STALE`**，
+  与 REPO_STANDARD 1.1（「可以是生成文件，也可以是手写正文」）和 4（「AGENTS 生成还是手写」
+  属于不锁定的内容模型）直接冲突。
+  兼容：未声明 `generated_files` 的仓库行为不变；声明了 5 件的仓库行为也不变。
+- 模板 CI 改为显式安装文档依赖（`PyYAML` / `markdown-it-py` / `jsonschema`），
+  不再 `python -m pip install -r requirements.txt`。代码仓库的 `requirements.txt` 是
+  运行/构建清单（例如 `dufs-gui` 里只有 `pyinstaller==6.22.3`），按模板装会在
+  `check_repo.py` 处报 `DEPENDENCY_MISSING` 退出 2。
+
+### Changed
+
+- `REPO_STANDARD` 6：文档依赖与仓库自有 `requirements.txt` 解耦，并说明
+  `generated_files` 决定生成范围。
+- `monorepo` profile 的 `include` 补 `CHANGELOG.md`：此前它在 `exempt_basenames` 里、
+  却不在 `include` 里，等于**四件套中的 CHANGELOG 从不参与链接检查**（`exempt_basenames`
+  只对已纳入扫描的文件生效）。`README.md` 一直是 include + exempt 双写，CHANGELOG 漏了。
+
 ## [2.5.0] - 2026-11-16
 
 ### Changed

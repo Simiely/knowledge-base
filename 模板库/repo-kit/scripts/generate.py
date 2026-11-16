@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""repo-kit v2.3 生成器。
+"""repo-kit v2.5 生成器。
 
 生成而不是手写：
 - AGENTS.md：AI/人的唯一入口，保持薄
@@ -397,7 +397,7 @@ def build_backlinks(pages: dict[str, dict], tax: dict) -> str:
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description="repo-kit v2.0 生成器")
+    ap = argparse.ArgumentParser(description="repo-kit v2.5.1 生成器")
     ap.add_argument("--root", default=".")
     ap.add_argument("--write", action="store_true", help="写入生成文件")
     ap.add_argument("--check", action="store_true", help="只检查生成文件是否最新")
@@ -415,13 +415,18 @@ def main() -> int:
     except ValueError:
         tool_rel = "scripts"
     tax, pages = load_pages(root)
-    outputs = {
+    candidates = {
         "AGENTS.md": build_agents(pages, tax, root, tool_rel),
         "llms.txt": build_llms(pages, tax, root),
         "docs/_generated/index.md": build_index(pages, tool_rel),
         "docs/_generated/backlinks.md": build_backlinks(pages, tax),
         "docs/_generated/pitfalls.md": build_pitfall_index(pages, tool_rel),
     }
+    # 只生成 taxonomy 声明过的文件：AGENTS.md 由仓库自行决定是生成还是手写
+    # （REPO_STANDARD 1.1/4）。未声明时按全部生成，兼容 v2.5.0 及更早的仓库。
+    declared = set(tax.get("generated_files") or [])
+    outputs = {rel: text for rel, text in candidates.items() if not declared or rel in declared}
+    skipped = [rel for rel in candidates if rel not in outputs]
     problems = []
     for rel, content in outputs.items():
         path = root / rel
@@ -432,9 +437,11 @@ def main() -> int:
                 path.parent.mkdir(parents=True, exist_ok=True)
                 path.write_text(content, encoding="utf-8")
     if args.json:
-        print(cr.json.dumps({"pages": len(pages), "stale": problems, "written": args.write}, ensure_ascii=False, indent=2))
+        print(cr.json.dumps({"pages": len(pages), "stale": problems, "written": args.write,
+                             "skipped": skipped}, ensure_ascii=False, indent=2))
     elif args.write:
-        print(f"GENERATED: {len(outputs)} files, pages={len(pages)}")
+        extra = f"，跳过未声明 {len(skipped)} 个（{', '.join(skipped)}）" if skipped else ""
+        print(f"GENERATED: {len(outputs)} files, pages={len(pages)}{extra}")
     else:
         for rel in problems:
             print(f"GENERATED_STALE: {rel}")

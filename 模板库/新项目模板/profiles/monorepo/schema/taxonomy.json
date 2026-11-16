@@ -1,7 +1,7 @@
 {
   "version": "{{KIT_VERSION}}",
   "name": "{{PROJECT_NAME}}",
-  "include": ["README.md", "AGENTS.md", "DEVELOPMENT.md", "docs/**"],
+  "include": ["README.md", "AGENTS.md", "DEVELOPMENT.md", "CHANGELOG.md", "docs/**"],
   "context_files": ["AGENTS.md"],
   "exempt_basenames": ["README.md", "CHANGELOG.md"],
   "slugger": "github",

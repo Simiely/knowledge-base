@@ -1,8 +1,8 @@
 {
   "spec": "repo-standard",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "released": "2026-11-16",
-  "min_kit": "2.5.0",
+  "min_kit": "2.5.1",
   "breaking": [],
   "migration": "migrations/v2.1.0.md"
 }
