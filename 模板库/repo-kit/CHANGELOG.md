@@ -1,5 +1,46 @@
 # Changelog
 
+## [2.7.1] - 2026-11-17
+
+纯结构重构（L4）：`main()` 604 行 → **296 行**，拆出六个各自只做一件事的函数。
+**没有任何行为变化**——验收方式是逐字节比对输出，不是"看起来一样"。
+
+### Changed（仅结构）
+
+| 函数 | 行数 | 职责 |
+|---|---|---|
+| `build_parser()` | 20 | 参数定义 |
+| `collect_docs()` | 27 | 扫出参与校验的 Markdown，记录豁免集合 |
+| `check_skill_contracts()` | 37 | skills profile 的 SKILL.md 契约，返回技能名表 |
+| `build_page_index()` | 183 | frontmatter / id / 词表 / 关系 / 坑位，产出五个累加器 |
+| `check_links_and_orphans()` | 77 | 链接、锚点、孤儿页（入链由调用方传入并累加） |
+| `render_report()` | 28 | 四种输出格式与退出码 |
+
+`main()` 现在是一条线：解析 → 加载 → 收文档 → 技能契约 → 页面索引 → 关系校验 →
+链接/孤儿 → ADR → 真源 → 变更集/baseline → 输出。
+
+### 为什么没有继续拆
+
+`build_page_index` 仍有 183 行，因为 frontmatter、id、词表、关系、坑位**共享同一批累加器**
+（关系与坑位还要做二次校验）。再拆就得把这五个容器包成状态对象，那是一次重新设计，
+不是重构——收益是"数字更小"，代价是行为等价性需要用同样的力气重新证明。
+
+`main()` 剩下的 296 行里，`changed / baseline / prune` 那段约 90 行是最值得下一步抽的，
+但它同时改 report 与退出码，风险高于收益，留到下次真需要改这块时再做。
+
+### 验证
+
+- 65 项单测通过。
+- **逐字节比对**：一个注入 9 ERROR + 3 WARN 的夹具（覆盖坏链、坏锚点、缺 frontmatter、
+  重复 id、非法关系、孤儿页、过期页），text / json / sarif 三种输出与重构前完全一致；
+  另外 5 个真实仓库（kit 自身、dufs-gui、blender-tips、home-inventory、EverythingCmdPal）
+  的 text / json 输出也逐字节一致。
+- `release --check` PASS、`drift_probe` 8/8。
+
+### Compatibility
+
+- 无需重装：行为等价，已装 2.7.0 的仓库继续可用。重装只是让文件内容对齐到 2.7.1。
+
 ## [2.7.0] - 2026-11-17
 
 结构收敛第二批（L2）：**「哪些文件不要求 frontmatter」从四种写法收敛成一种**。
