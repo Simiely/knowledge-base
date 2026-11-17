@@ -58,8 +58,8 @@ v2.2 起的默认行为与 v2.1 一致；以下能力全部 opt-in：
 | 同 PR co-change | `sources.json` 的 `co_change` + `--changed-since` / `--changed-files` |
 | SARIF / GitHub 输出 | `--format sarif|github` |
 | baseline fingerprint | `--baseline-format v2` |
-| summary WARN | `summary_policy: "warn"` 或 `--strict-summary` |
-| GitHub 风格锚点 | `slugger: "github"` |
+| summary WARN | 2.7.0 起默认开启，无需配置（`summary_policy` 与 `--strict-summary` 均已废弃） |
+| GitHub 风格锚点 | 2.7.0 起固定启用（`slugger` 已废弃） |
 | 踩坑页（失败模式库） | `kind: pitfall` + 八个必填字段 |
 | 已解决的坑不参与过期判定 | `status: resolved` |
 
@@ -334,7 +334,10 @@ v1 baseline 仍可读；v2 用 fingerprint，message 小改不会让整条 basel
   "name_matches_dir": true,
   "min_description": 40
 },
-"link_only_files": ["skills/**/references/*.md"]
+"frontmatter_exempt": {
+  "names": [],
+  "paths": ["skills/**/references/*.md"]
+}
 ```
 
 - `SKILL.md` 校验 name 格式、name 与目录一致、description 最小长度。

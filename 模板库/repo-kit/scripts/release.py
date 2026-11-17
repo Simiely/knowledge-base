@@ -115,6 +115,15 @@ def write_version(new: str, min_kit: str | None) -> int:
         print(f"CHANGELOG: 已插入 [{new}] 空节")
 
     print(f"RELEASE: v{new} 已写入 taxonomy / check_repo.py" + (f" / min_kit={min_kit}" if min_kit else ""))
+
+    # 版本号会进 AGENTS.md / llms.txt 的 {{VERSION}}，不重新生成的话仓库立刻自检失败。
+    # 这一步以前靠人补，2.6.0 / 2.7.0 / 2.7.1 / 2.7.2 连踩四次。
+    gen = subprocess.run(
+        [sys.executable, str(GENERATE), "--root", str(KIT), "--write"],
+        cwd=KIT, capture_output=True, text=True,
+    )
+    if gen.returncode == 0:
+        print(f"  {gen.stdout.strip()}")
     return 0
 
 

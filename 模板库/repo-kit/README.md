@@ -85,12 +85,12 @@ repo-kit-v2/
 | baseline / changed-only | 强 | 存量仓库渐进接入；v2 baseline 带 fingerprint |
 | 扫描范围 | 强 | `taxonomy.json` 的 `include` / `ignore`；`*.template.md` 自动跳过 |
 | 生成入口可覆盖 | 强 | `schema/agents.template.md` + `taxonomy.name` |
-| monorepo 上下文 | 强 | `context_files` / `exempt_basenames`，默认关闭，显式开启 |
+| 前端/产物免 frontmatter | 强 | `frontmatter_exempt.names`（按文件名）/ `.paths`（按路径 glob） |
 | 多源 provenance | 强 | `source` 主源 + `sources` 附加源（code/schema/url/doc） |
 | 报告生命周期 | 强 | `kind: report` / `status: archived` 不参与过期判定 |
 | 同 PR co-change | 强 | `co_change` + `--changed-since` / `--changed-files` |
 | SARIF / GitHub 输出 | 强 | `--format sarif` / `--format github`，带稳定 fingerprint |
-| skills profile | 强 | `skills/**/SKILL.md` 用独立 schema；`link_only_files` 只查链接 |
+| skills profile | 强 | `skills/**/SKILL.md` 用独立 schema；`references/*.md` 走 `frontmatter_exempt.paths` 只查链接 |
 | 语义真假 | 无 | 只能人审；这是边界，不是缺陷 |
 | 踩坑页 | 强 | `kind: pitfall` 八个必填字段；`applies_to` 可指向页面或技能；生成踩坑索引 |
 | 已解决的坑 | 强 | `status: resolved` 不参与过期判定，仍保留在索引 |

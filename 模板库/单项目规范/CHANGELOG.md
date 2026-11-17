@@ -26,6 +26,14 @@ kit 描述“用哪个校验器检查”。仓库通过 `schema/kit.lock.json` �
 不是审美：四种写法导致「新仓库该往哪个键里加」每次都要读代码才知道，
 而 `check_repo` 与 `generate` 各实现一遍，改一处必漏另一处。
 
+### 工具（不改变任何要求，不触发仓库升级）
+
+- `audit-spec.ps1` 从「只比 spec_version」扩成 fleet 体检，新增四项：
+  `taxonomy.version` 与 `kit.lock.version` 漂移、CI 是否真的接 `check_repo`
+  （含 `--changed-since` 缺 `fetch-depth: 0` 的静默失效）、死 baseline、旧豁免键残留。
+  任一不满足退出码为 1，可进任意流水线。
+- 五类缺陷各造一个副本验证过：全部命中，13 个真实仓库零误报。
+
 ## [2.1.2] - 2026-11-16
 
 补两处「规范写了、执行面没跟上」的地方。由 `blender-tips` 真实升级暴露。

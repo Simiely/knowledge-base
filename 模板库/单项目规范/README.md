@@ -34,8 +34,24 @@
 | 机器层 | 内容契约、链接/锚点、真源、生成产物、版本锁 | `tools/repo-kit/`、`schema/`、`schema/kit.lock.json`、CI |
 
 规范版本单独标记：最新版本见 [`spec.json`](spec.json)，每个仓库通过 `schema/kit.lock.json` 的
-`spec_version` 声明自己按哪一版整理。任何程序读这一个字段即可判断版本；全局盘点用
-`pwsh 模板库/单项目规范/audit-spec.ps1 -ReposRoot <仓库根目录>`（加 `-Json` 输出机器可读结果）。
+`spec_version` 声明自己按哪一版整理。任何程序读这一个字段即可判断版本。
+
+**全局盘点**用 `audit-spec.ps1`，它同时查五件事（任一不满足即退出码 1）：
+
+```powershell
+pwsh 模板库/单项目规范/audit-spec.ps1 -ReposRoot <仓库父目录>,<单个仓库路径>
+# 加 -Json 输出机器可读结果
+```
+
+| 检查 | 抓什么 |
+|---|---|
+| `spec` / `state` | `spec_version` 落后、缺失或高于校验器 |
+| `skew:a-vs-b` | `taxonomy.version` 与 `kit.lock.version` 不一致（只改了一边） |
+| `ci-missing` / `ci-no-fetch-depth` | CI 没接 `check_repo`；或用了 `--changed-since` 却没收全历史 |
+| `baseline:N` | 还留着 `schema/check-baseline.json`（规则静音后它是死配置） |
+| `legacy-keys` / `legacy-nokey` | taxonomy 仍是旧豁免键，或新旧都没有 |
+
+这个脚本**不随仓库分发**，改它不产生任何锁哈希变更。
 
 **新建仓库不要手搭目录**：
 

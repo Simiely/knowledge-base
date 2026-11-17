@@ -47,7 +47,7 @@ LINK_SCHEMES = ("http://", "https://", "mailto:", "tel:", "javascript:", "data:"
 ADR_RE = re.compile(r"ADR-(\d{4})-[a-z0-9-]+\.md$")
 ID_RE = re.compile(r"^[a-z0-9]+(\.[a-z0-9-]+)+$")
 PITFALL_FIELDS = ("summary", "symptom", "cause", "detect", "avoid", "recover", "applies_to", "severity")
-KIT_VERSION = "2.7.1"
+KIT_VERSION = "2.7.2"
 SPEC_VERSION = "2.1.3"
 
 
@@ -692,7 +692,7 @@ def build_parser() -> argparse.ArgumentParser:
     ap.add_argument("--changed-since", default="", help="只报告该 git ref 之后变更的文件")
     ap.add_argument("--changed-files", default="", help="newline 分隔的变更文件列表（用于 CI）")
     ap.add_argument("--allow-truth-only", action="store_true", help="允许真源单独变更（纯重构逃生口）")
-    ap.add_argument("--strict-summary", action="store_true", help="standard/index/decision 缺 summary 时 WARN")
+    ap.add_argument("--strict-summary", action="store_true", help="[已废弃] summary 自 2.7.0 起默认告警，本开关不再产生任何效果")
     ap.add_argument("--check-git", action="store_true", help="校验 source_commit 是否存在于 git")
     ap.add_argument("--today", default="", help="覆盖今天的日期（YYYY-MM-DD），用于测试")
     args = ap.parse_args()

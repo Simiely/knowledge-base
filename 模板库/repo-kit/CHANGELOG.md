@@ -1,5 +1,29 @@
 # Changelog
 
+## [2.7.2] - 2026-11-17
+
+收尾：文档里还在教已废弃的写法，以及一个让发布流程连踩四次的缺陷。
+
+### Fixed
+
+- **README / usage 的示例仍指向旧键**：`context_files` / `exempt_basenames` /
+  `link_only_files` 在 2.7.0 已废弃，但 README 的「能力表」和 usage 的 skills 示例
+  还在用它们。读者按示例配置会一路踩到 `TAXONOMY_LEGACY_KEY`。
+  现改为 `frontmatter_exempt.names` / `.paths`。
+- **`release.py` 不再依赖人补生成物**：版本号写进 `AGENTS.md` / `llms.txt` 的 `{{VERSION}}`，
+  发布后必须 `generate --write`，否则仓库立刻自检失败。这一步此前靠人记，
+  2.6.0 / 2.7.0 / 2.7.1 / 2.7.2 **连踩四次**；现在 release 自己跑。
+
+### Deprecated
+
+- `--strict-summary`：2.7.0 把 `summary_policy` 固定为 `warn` 后，这个开关已不产生任何效果
+  （条件恒真）。按 SemVer，**删除公开 flag 是 MAJOR**，所以本版只把它标成 `[已废弃]`，
+  留到 3.0 再删。`usage.md` 的对应表格行同步改写。
+
+### Compatibility
+
+- 无行为变化，无需重装。
+
 ## [2.7.1] - 2026-11-17
 
 纯结构重构（L4）：`main()` 604 行 → **296 行**，拆出六个各自只做一件事的函数。
