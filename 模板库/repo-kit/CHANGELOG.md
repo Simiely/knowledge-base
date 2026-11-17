@@ -1,5 +1,36 @@
 # Changelog
 
+## [2.7.3] - 2026-11-17
+
+修 `skills` 契约：这套 profile 从 2.0 起就在，但**从未被任何仓库使用过**，
+所以它的规则一直没被真实校验。2.7.3 首次接第一个 skills 仓（davinci-skills），
+顺手拿 Agent Skills 官方规范（agentskills.io/specification）对了一遍，发现两处过宽。
+
+### Fixed
+
+| 项 | 2.7.2 | 2.7.3 | 官方规范 |
+|---|---|---|---|
+| `description.maxLength` | 1200 | **1024** | 1024 |
+| `name.pattern` | `^[a-z0-9][a-z0-9-]*$` | **`^[a-z0-9]+(-[a-z0-9]+)*$`** | 禁止尾连字符、禁止连续连字符 |
+
+旧的 `name` 正则允许 `my-skill-` 和 `a--b`，旧的长度上限允许 1100 字符的描述——
+两者都能通过检查器，却会被 Claude 的加载器拒绝。**这是"检查通过 ≠ 能用"的一类缺陷。**
+
+### Added
+
+- `tests/test_skills_contract.py`（8 项）：合法名、尾连字符、连续连字符、大写、name≠目录、
+  description 超 1024 / 未超 / 低于本仓下限（`SKILL_DESC_SHORT`）。
+
+### Note
+
+- `min_description: 40` 是**本仓约定**，不是官方要求（官方只要求非空）。
+  文档已按这个口径写，避免以后拿官方规范对照时误以为两者冲突。
+
+### Compatibility
+
+- 目前只有 davinci-skills 会用 `skills` profile，收紧不影响任何存量仓库。
+- 其他 profile 的仓库无需重装。
+
 ## [2.7.2] - 2026-11-17
 
 收尾：文档里还在教已废弃的写法，以及一个让发布流程连踩四次的缺陷。
