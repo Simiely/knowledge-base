@@ -175,11 +175,15 @@ class V22Test(unittest.TestCase):
         self.assertGreaterEqual(result["baselined"], 1)
 
     # -- summary policy / slugger ----------------------------------------
-    def test_summary_policy_off_by_default(self) -> None:
+    def test_summary_required_by_default(self) -> None:
+        """2.7.0 起 summary 默认必填——`summary_policy` 不再是配置项。
+
+        旧语义：默认 off，只有 `--strict-summary` 才告警。
+        新语义：默认 warn。理由：12 个仓库里 11 个显式写了 warn，另 1 个是 pages=0 的
+        link-only 仓——这个开关从来没起过作用，只是多一个抄错的点。
+        """
         self.replace("docs/index.md", "summary: 人工导航枢纽；生成索引见 _generated/index.md。\n", "")
-        self.assertNotIn("SUMMARY_MISSING", self.codes("WARN"))
-        data = self.check_json("--strict-summary")
-        self.assertIn("SUMMARY_MISSING", {i["code"] for i in data["items"] if i["severity"] == "WARN"})
+        self.assertIn("SUMMARY_MISSING", self.codes("WARN"))
 
     def test_slugger_github_option(self) -> None:
         self.tax_update(lambda t: t.update({"slugger": "github"}))

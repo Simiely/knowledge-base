@@ -1,18 +1,23 @@
 {
-  "version": "2.6.0",
-  "name": "repo-kit v2.6.0",
+  "version": "2.7.0",
+  "name": "repo-kit v2.7.0",
   "include": [],
-  "context_files": [],
-  "exempt_basenames": [],
-  "slugger": "legacy",
-  "summary_policy": "off",
+  "frontmatter_exempt": {
+    "names": [
+      "CHANGELOG.md",
+      "CONTRIBUTING.md",
+      "README.md",
+      "REPO_STANDARD.md",
+      "SECURITY.md"
+    ],
+    "paths": []
+  },
   "skills": {
     "glob": "skills/**/SKILL.md",
     "schema": "schema/skills.schema.json",
     "name_matches_dir": true,
     "min_description": 40
   },
-  "link_only_files": [],
   "types": [
     "tutorial",
     "how-to",
@@ -87,13 +92,6 @@
     "normal": 365,
     "critical": 90
   },
-  "entry_files": [
-    "README.md",
-    "REPO_STANDARD.md",
-    "CONTRIBUTING.md",
-    "CHANGELOG.md",
-    "SECURITY.md"
-  ],
   "generated_files": [
     "AGENTS.md",
     "llms.txt",

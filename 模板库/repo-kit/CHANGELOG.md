@@ -1,5 +1,43 @@
 # Changelog
 
+## [2.7.0] - 2026-11-17
+
+结构收敛第二批（L2）：**「哪些文件不要求 frontmatter」从四种写法收敛成一种**。
+由 12 个仓库的实测数据驱动，不是审美问题。
+
+### 数据依据
+
+| 事实 | 实测 |
+|---|---|
+| `context_files` | **12/12 都是 `["AGENTS.md"]`** —— 不是配置，是常量 |
+| `slugger` | **12/12 都是 `github`** —— `legacy` 从未被使用 |
+| `summary_policy` | 11 `warn` + 1 `off`（后者 `pages=0`，开关从未生效） |
+| 四种豁免键 | 经 `matches_basename()` 证实同一语义：`context_files` 与 `exempt_basenames` 是同一行代码 |
+
+同一段豁免逻辑还在 `check_repo.py` 与 `generate.py` 里**各实现了一遍**，加一个仓库需求要动两处。
+
+### Added
+
+- `frontmatter_exempt: {"names": [...], "paths": [...]}`：`names` 按文件名匹配（任意层级），
+  `paths` 按相对路径 glob 匹配；也接受扁平列表。
+- `check_repo.resolve_exempt()`：唯一的归一化入口，`generate.py` 改为复用它。
+- `scripts/migrate-taxonomy.py`：**文本手术**式迁移（只删旧键、插新键，不重排其余字节），
+  带 `--check` 预览 diff。
+- `tests/test_exempt.py`（4 项）：names 任意层级、paths 不误伤同名、生成器与校验器同判定、旧键仍生效并告警。
+
+### Changed
+
+- `slugger` 固定 `github`、`summary_policy` 固定 `warn`。后者是**行为变化**：
+  `--strict-summary` 不再是唯一触发条件。影响面为零——唯一设 `off` 的仓库 `pages=0`。
+- 旧键（`context_files` / `exempt_basenames` / `entry_files` / `link_only_files`）仍生效，
+  但报 `TAXONOMY_LEGACY_KEY`（每仓一条）。
+
+### Compatibility
+
+- **不破坏**：旧 taxonomy 不改也能跑，只是多一条 WARN。
+- 迁移一个仓库只需两条命令（`migrate-taxonomy --check` 看 diff，`--write` 落盘），
+  验收标准是迁移前后 `check_repo` 的 (errors, warnings, pages) 三元组不变。
+
 ## [2.6.0] - 2026-11-16
 
 结构收敛第一批：**版本号从「五处拷贝」变成「一处定义」**，并把 CI 模板的不一致修掉。

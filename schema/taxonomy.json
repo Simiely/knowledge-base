@@ -1,5 +1,5 @@
 {
-  "version": "2.6.0",
+  "version": "2.7.0",
   "name": "knowledge-base",
   "include": [
     "README.md",
@@ -9,14 +9,13 @@
     "模板库/**",
     "用户库/**"
   ],
-  "context_files": [],
-  "exempt_basenames": [],
-  "slugger": "github",
-  "summary_policy": "off",
-  "link_only_files": [
-    "*.md",
-    "**/*.md"
-  ],
+  "frontmatter_exempt": {
+    "names": [],
+    "paths": [
+      "**/*.md",
+      "*.md"
+    ]
+  },
   "types": [
     "tutorial",
     "how-to",
@@ -90,7 +89,6 @@
     "normal": 365,
     "critical": 90
   },
-  "entry_files": [],
   "generated_files": [],
   "ignore": [
     ".github/**",

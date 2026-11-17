@@ -52,7 +52,7 @@ v2.2 起的默认行为与 v2.1 一致；以下能力全部 opt-in：
 
 | 能力 | 开启方式 |
 |---|---|
-| 嵌套 `AGENTS.md` / `README.md` / `CHANGELOG.md` 免 frontmatter | `context_files` / `exempt_basenames` |
+| 嵌套 `AGENTS.md` / `README.md` / `CHANGELOG.md` 免 frontmatter | `frontmatter_exempt`（旧键仍可用） |
 | 一次性报告不参与过期判定 | `kind: report` + `status: archived` |
 | 一页多源 | `sources: ["code:...", "doc:..."]` |
 | 同 PR co-change | `sources.json` 的 `co_change` + `--changed-since` / `--changed-files` |
@@ -236,16 +236,30 @@ python scripts/check_repo.py --root . --json
 
 - `include`：非空时只扫描匹配文件。真实仓库建议先 `["README.md", "AGENTS.md", "docs/**"]`。
 - `ignore`：排除 `plugins/**`、`vendor/**`、`node_modules/**` 等。
-- `context_files`：按 basename 匹配的 agent 上下文文件，例如 `["AGENTS.md"]`；不要求 frontmatter。
-- `exempt_basenames`：按 basename 匹配的健康/产物文件，例如
-  `["README.md", "CHANGELOG.md", "CONTRIBUTING.md", "SECURITY.md"]`；不要求 frontmatter。
-- `slugger`：`legacy`（默认）或 `github`。
-- `summary_policy`：`off`（默认）或 `warn`。
-- `skills`：技能 profile，`{glob, schema, name_matches_dir, min_description}`；`SKILL.md` 不套通用页面 schema。
-- `link_only_files`：只做链接检查、不要求 frontmatter 的 glob，例如 `skills/**/references/*.md`。
+- `frontmatter_exempt`：**唯一**的「不要求 frontmatter」配置，两个子键：
 
-`context_files` / `exempt_basenames` 默认都是空，所以 v2.1 单仓行为不变；monorepo 显式配置后，
-Phase 2 的 baseline 会从 22 条降到 16 条。它们仍然参与链接检查，只是不再当内容页。
+  ```json
+  "frontmatter_exempt": {
+    "names": ["AGENTS.md", "README.md", "CHANGELOG.md"],
+    "paths": ["rules/**", "skills/**/references/*.md"]
+  }
+  ```
+
+  `names` 按**文件名**匹配（任意层级），`paths` 按**相对路径 glob** 匹配。
+  两者都仍然参与链接检查，只是不再当内容页。也接受扁平列表（含 `/` 的进 `paths`）。
+- `skills`：技能 profile，`{glob, schema, name_matches_dir, min_description}`；`SKILL.md` 不套通用页面 schema。
+
+**旧键已废弃但仍生效**（`context_files` / `exempt_basenames` / `entry_files` / `link_only_files`），
+读到时会报一条 `TAXONOMY_LEGACY_KEY`（WARN），迁移用：
+
+```bash
+python scripts/migrate-taxonomy.py --root . --check   # 先看 diff
+python scripts/migrate-taxonomy.py --root . --write
+```
+
+2.7.0 之前这四种写法由 `check_repo` 与 `generate` **各实现一遍**，加一个仓库需求就要动两处；
+现在只剩 `resolve_exempt()` 一处。`slugger` 与 `summary_policy` 同样被固定为
+`github` / `warn`——实测 12 个仓库取值完全相同，已经不是配置项。
 
 `_` 开头与 `*.template.md` 的文件不参与校验；`schema/agents.template.md` 可以覆盖
 `AGENTS.md` 的正文（占位符 `{{PAGES}}`、`{{CRITICAL}}`、`{{TYPES}}`、`{{VERSION}}`）。

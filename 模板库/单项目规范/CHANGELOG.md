@@ -4,6 +4,28 @@
 kit 描述“用哪个校验器检查”。仓库通过 `schema/kit.lock.json` 的 `spec_version`
 字段声明自己按哪一版规范整理。
 
+## [2.1.3] - 2026-11-17
+
+### Added
+
+- `schema/taxonomy.json` 新增 **`frontmatter_exempt`**，作为「不要求 frontmatter」的唯一配置：
+
+  ```json
+  "frontmatter_exempt": {"names": ["AGENTS.md", "README.md"], "paths": ["rules/**"]}
+  ```
+
+### Deprecated
+
+- `context_files` / `exempt_basenames` / `entry_files` / `link_only_files`：四种写法表达同一件事，
+  保留生效但报 `TAXONOMY_LEGACY_KEY`。迁移见 `repo-kit/scripts/migrate-taxonomy.py`。
+- `slugger`（固定 `github`）与 `summary_policy`（固定 `warn`）：实测 12 个仓库取值相同，
+  不再是配置项。`summary_policy` 的默认值从 `off` 改为 `warn`，是本次唯一的**行为变化**。
+
+### Why
+
+不是审美：四种写法导致「新仓库该往哪个键里加」每次都要读代码才知道，
+而 `check_repo` 与 `generate` 各实现一遍，改一处必漏另一处。
+
 ## [2.1.2] - 2026-11-16
 
 补两处「规范写了、执行面没跟上」的地方。由 `blender-tips` 真实升级暴露。
