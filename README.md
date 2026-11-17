@@ -3,7 +3,7 @@
 沉淀所有项目（AE 脚本 / C4D 插件 / Blender 插件 / Web 项目 / 小程序）的可复用经验。
 原则：**写的时候多花 10 秒，找的时候省 10 分钟**。
 
-🔗 **关联管理仓库**：[hub-world](https://github.com/Simiely/hub-world)（项目导航/文档快照中心）——本仓管"经验"，那边管"项目展示/快照"，互相引用。
+🔗 **项目入口**：各项目导航在 6 个索引仓 —— [tech-guides](https://github.com/Simiely/tech-guides) 文档教程 · [design-tools](https://github.com/Simiely/design-tools) 设计与 3D · [pc-tools](https://github.com/Simiely/pc-tools) Windows 工具 · [mobile-apps](https://github.com/Simiely/mobile-apps) 移动端 · [docker-tools](https://github.com/Simiely/docker-tools) 自建服务 · [knowledge-hub](https://github.com/Simiely/knowledge-hub) 知识方案。本仓只管"经验沉淀"，不管项目展示。
 
 ---
 

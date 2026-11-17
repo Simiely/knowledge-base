@@ -3,7 +3,7 @@
 > 本目录是 `knowledge-base` 仓库的**用户数据库**：全部内容为实际使用产生的数据（踩坑经验 / 速查清单 / 仓库盘点）。
 > 骨架（规范 / 模板 / 索引框架）在仓库根 [`../模板库/`](../模板库/README.md)，两库同仓库、分开迭代。
 
-🔗 **关联管理仓库**：[hub-world](https://github.com/Simiely/hub-world)（项目导航/文档快照中心）——本仓管"经验"，那边管"项目展示/快照"，互相引用。
+🔗 **项目入口**：各项目导航在 6 个索引仓 —— [tech-guides](https://github.com/Simiely/tech-guides) 文档教程 · [design-tools](https://github.com/Simiely/design-tools) 设计与 3D · [pc-tools](https://github.com/Simiely/pc-tools) Windows 工具 · [mobile-apps](https://github.com/Simiely/mobile-apps) 移动端 · [docker-tools](https://github.com/Simiely/docker-tools) 自建服务 · [knowledge-hub](https://github.com/Simiely/knowledge-hub) 知识方案。本仓只管"经验沉淀"，不管项目展示。
 
 ## 一套方案，两个层级（单项目 + 多项目）
 
@@ -122,7 +122,7 @@ knowledge-base/
 - 要做过期提醒 / 推送收不到 → `复用模式/家庭提醒的推送通道选型.md`
 - 想规范单个仓库的文档 → [`../模板库/单项目规范/README.md`](../模板库/单项目规范/README.md)
 - 查看所有仓库的规范状态 / 基线 → `仓库盘点表.md`
-- 查看全部项目导航 / 文档中心（管理仓库） → https://github.com/Simiely/hub-world
+- 查看某类项目的导航 → 索引仓：`tech-guides`（文档教程）· `design-tools`（设计/3D）· `pc-tools`（Windows 工具）· `mobile-apps`（移动端）· `docker-tools`（自建服务）· `knowledge-hub`（知识方案）
 - 忘记某条经验在哪 → Obsidian 打开本目录全文搜索
 
 ## 条目模板（怎么用）
