@@ -219,6 +219,7 @@ related: ["code.config.retry:depends-on"]
 | `ENTRY_DUP` | 出现第二份完整规则文件 | 改成一行指向 `AGENTS.md` |
 | `GENERATED_MISSING` | 生成产物缺失 | 跑 `generate.py --write` |
 | `GENERATED_STALE` | 生成产物过期 | 跑 `generate.py --write` |
+| `GENERATED_BLOCKED` | `AGENTS.md` 是手写文件，且没有 `schema/agents.template.md` | 二选一：把它从 `generated_files` 移除（保留手写），或先补模板再生成。生成器不会覆盖它 |
 | `CHANGED_EMPTY` | `--changed-since` 没检测到变更（WARN） | 确认 git ref / 在 git 仓库运行 |
 | `ORPHAN` | 没有任何入链（WARN） | 挂到 `docs/index.md` 或补 `related` |
 
@@ -263,6 +264,15 @@ python scripts/migrate-taxonomy.py --root . --write
 
 `_` 开头与 `*.template.md` 的文件不参与校验；`schema/agents.template.md` 可以覆盖
 `AGENTS.md` 的正文（占位符 `{{PAGES}}`、`{{CRITICAL}}`、`{{TYPES}}`、`{{VERSION}}`）。
+
+**`AGENTS.md` 是手写还是生成，必须在接入前决定**（`REPO_STANDARD` 1.1 / 4 条清单）：
+
+- 保留手写：把 `"AGENTS.md"` 从 `generated_files` 移除。生成器不碰它，`generate --check` 也不要求它。
+- 改为生成：`cp AGENTS.md schema/agents.template.md`，把易变数字换成上面四个占位符，再跑 `--write`。
+
+两条都没做（有手写文件、没模板、又声明要生成）时，2.7.4 起 `generate` 会报
+`GENERATED_BLOCKED` 并整轮拒绝写入；2.7.3 及更早会直接用内置兜底模板覆盖掉手写内容。
+`update-repo-kit.ps1` 装完时会主动提示这个二选一。
 
 ### 7.2 再建 baseline
 

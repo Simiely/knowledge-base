@@ -1,5 +1,48 @@
 # Changelog
 
+## [2.7.4] - 2026-11-18
+
+修一个会**静默丢内容**的存量仓库接入缺陷，并补上安装器的提示。
+
+### 背景
+
+把生成器装进已有 `AGENTS.md` 的仓库时，`check_repo` 会报 4 条 `GENERATED_MISSING`
+（`llms.txt`、`docs/_generated/*`），提示「跑 `generate.py --write`」。照做之后，
+**内置兜底模板会把手写 `AGENTS.md` 整份替换掉**——实测 59 行变 31 行，
+而且新文件硬链 `docs/usage.md` / `docs/concepts/ssot.md` / `docs/decisions/index.md`，
+普通仓库没有这三页，于是立刻再多 4 条 `LINK_BROKEN`。
+
+也就是说：检查器的修复提示会引导人执行破坏操作。davinci-skills 当时是先
+`cp AGENTS.md schema/agents.template.md` 才没踩到，属于运气，不是流程保证。
+
+### Changed
+
+- `generate.py`：新增 `GENERATED_BLOCKED` 守卫。`AGENTS.md` 已存在、`schema/agents.template.md`
+  缺失、且前 5 行不含「生成文件，勿手改」标识时，**整轮拒绝写入**（`--write` 退出码 2，
+  `--check` 退出码 1 并输出 `GENERATE CHECK: FAIL (blocked=AGENTS.md...)`），
+  文件与其它生成物一律不动。判定放在 `check_repo.agents_conflict()`，两个入口共用一份。
+- `check_repo.py`：同样状态下直接报 `GENERATED_BLOCKED`（ERROR），让人在第一个工具那里
+  就看到真因，而不是「生成物缺失，请跑 --write」这条会引导破坏操作的提示。
+- 内置兜底模板的入口链接改为**按文件是否存在输出**：缺少 `docs/usage.md` 等页面时不再生成死链。
+  `## 怎么操作` 段同理。
+
+### Added
+
+- `update-repo-kit.ps1` 安装完成后，若 profile 非 `link-only`、仓库有 `AGENTS.md`、
+  没有 `schema/agents.template.md`、且 `generated_files` 仍声明 `AGENTS.md`，
+  会输出一条 `WARNING`，直接给出二选一：保留手写（从 `generated_files` 移除）或补模板。
+- `tests/test_agents_guard.py`（9 项）：拒绝覆盖、无半套写入、`--check` 报 blocked 而非 stale、
+  `--json` 暴露 `blocked`、`check_repo` 报真因、正文引用标识不算生成物、模板存在可写、
+  从 `generated_files` 移除后不动、兜底模板无死链。
+
+### Compatibility
+
+- 这是 patch：`--check` 的 PASS/FAIL 语义未变，`--strict-summary` 等公开 flag 未动。
+- **不需要为这个修复重刷存量仓库**：34 个已接入仓里，12 个生成型仓都有模板，
+  22 个 `link-only` 仓 `generated_files` 为空，两种情况都不会触发守卫。
+  下次给某个仓升级 kit 时自然带上 2.7.4 即可。
+- 文档：`docs/usage.md` 的报错表新增 `GENERATED_BLOCKED`，7.1 补「手写还是生成必须在接入前决定」。
+
 ## [2.7.3] - 2026-11-17
 
 修 `skills` 契约：这套 profile 从 2.0 起就在，但**从未被任何仓库使用过**，

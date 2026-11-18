@@ -214,6 +214,7 @@ baseline 是**临时脚手架**，不是长期配置：它压制的是「已知�
 - [ ] `taxonomy.json` 的 `include` 与 `entry_files` 覆盖**四件套**（`README` / `AGENTS` /
       `DEVELOPMENT` / `CHANGELOG`），否则四件套的体量阈值永远不会被检查
 - [ ] `taxonomy.json` 的 `generated_files` 决定**生成范围**：`AGENTS.md` 打算手写就把它
-      从这个清单里去掉（`generate.py` 自 2.5.1 起尊重该清单）
+      从这个清单里去掉（`generate.py` 自 2.5.1 起尊重该清单）；打算生成就必须同时有
+      `schema/agents.template.md`。两者都不做会报 `GENERATED_BLOCKED` 并拒绝写入（2.7.4 起）
 - [ ] 加 CI：check + `--changed-since`（PR 事件）+ generate --check（如适用）+ lock check
 - [ ] 在 `AGENTS.md` 写清入口、命令与边界
