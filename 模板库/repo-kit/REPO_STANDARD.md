@@ -196,7 +196,9 @@ baseline 是**临时脚手架**，不是长期配置：它压制的是「已知�
    两者不一致时同版本 kit 会产出两个版本号，且无任何检查能发现。
 
 3. 跨版本号的一处仍需手工确认：`spec.json` 的 `version` ↔ `check_repo.py` 的 `SPEC_VERSION`
-   （规范版本，不是 kit 版本）。漏改会立刻 `SPEC_NEWER`，自己的仓库先红。
+   （规范版本，不是 kit 版本）。2.8.1 起按**主/次版本**比较——补丁不同不再报
+   `SPEC_NEWER`，所以发一个只改措辞的 PATCH 版规范不会让已接入仓库集体变红；
+   但常量落后等于「支持到哪一版」说谎，仍要同步。
 4. 在每个仓库运行：
    ```powershell
    pwsh tools/update-repo-kit.ps1 -Source <kit 路径> -Profile <profile>

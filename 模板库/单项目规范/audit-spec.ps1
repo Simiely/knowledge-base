@@ -6,6 +6,8 @@
 .DESCRIPTION
     Scans <ReposRoot>/<repo>/ and reports per repo:
       - spec   : declared spec_version in schema/kit.lock.json vs ../单项目规范/spec.json
+               current / behind-patch (only the patch differs: shown, never counts as an
+               issue) / behind (major or minor differs) / newer / v1 / legacy / invalid
       - kit    : schema/taxonomy.json version must equal kit.lock.json version
       - flags  : one or more of
                    skew:<a>vs<b>       taxonomy version != lock version (silent drift)
@@ -34,12 +36,20 @@ $legacyKeys = @('context_files', 'exempt_basenames', 'entry_files', 'link_only_f
 function Compare-Ver([string]$value) {
     if ($value -notmatch '^(\d+)\.(\d+)\.(\d+)$') { return 'invalid' }
     $parts = $Matches[1], $Matches[2], $Matches[3] | ForEach-Object { [int]$_ }
-    for ($i = 0; $i -lt 3; $i++) {
+    # 主/次版本是契约边界：落后必须报。补丁版本只做措辞澄清，落后不算缺陷
+    # （规范 2.1.4 起），单独给一个状态用于显示，不计入 issues。
+    for ($i = 0; $i -lt 2; $i++) {
         if ($parts[$i] -gt $specParts[$i]) { return 'newer' }
         if ($parts[$i] -lt $specParts[$i]) { return 'behind' }
     }
+    if ($parts[2] -lt $specParts[2]) { return 'behind-patch' }
+    if ($parts[2] -gt $specParts[2]) { return 'newer' }
     return 'current'
 }
+
+# 计入 issues（= 退出码 1）的状态。behind-patch 故意不在其中：发一个只改措辞的
+# PATCH 版，不该让全 fleet 变红。
+$issueStates = @('behind', 'newer', 'legacy', 'v1', 'invalid')
 
 function Get-RepoFlags([string]$root) {
     $flags = New-Object System.Collections.Generic.List[string]
@@ -133,6 +143,9 @@ foreach ($root in $ReposRoot) {
     }
 }
 
+$issues = @($rows | Where-Object { $_.flags -ne '' -or $issueStates -contains $_.state })
+$patchBehind = @($rows | Where-Object { $_.state -eq 'behind-patch' }).Count
+
 if ($Json) {
     $rows | ConvertTo-Json -Depth 3
 } else {
@@ -140,9 +153,8 @@ if ($Json) {
     $table = $rows | Sort-Object @{ Expression = { $_.flags -ne '' }; Descending = $true }, repo |
         Format-Table -AutoSize | Out-String -Width 200
     Write-Output $table.TrimEnd()
-    $bad = @($rows | Where-Object { $_.flags -ne '' -or $_.state -ne 'current' }).Count
-    Write-Output ('FLEET AUDIT: latest=' + $specVersion + ', repos=' + @($rows).Count + ', issues=' + $bad)
+    Write-Output ('FLEET AUDIT: latest=' + $specVersion + ', repos=' + @($rows).Count + ', issues=' + $issues.Count + ', patch-behind=' + $patchBehind)
 }
 
-if (@($rows | Where-Object { $_.flags -ne '' -or $_.state -ne 'current' }).Count -gt 0) { exit 1 }
+if ($issues.Count -gt 0) { exit 1 }
 exit 0

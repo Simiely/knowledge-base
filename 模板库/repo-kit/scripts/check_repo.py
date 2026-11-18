@@ -47,8 +47,8 @@ LINK_SCHEMES = ("http://", "https://", "mailto:", "tel:", "javascript:", "data:"
 ADR_RE = re.compile(r"ADR-(\d{4})-[a-z0-9-]+\.md$")
 ID_RE = re.compile(r"^[a-z0-9]+(\.[a-z0-9-]+)+$")
 PITFALL_FIELDS = ("summary", "symptom", "cause", "detect", "avoid", "recover", "applies_to", "severity")
-KIT_VERSION = "2.8.0"
-SPEC_VERSION = "2.1.3"
+KIT_VERSION = "2.8.1"
+SPEC_VERSION = "2.1.4"
 
 
 # ---------------------------------------------------------------------------
@@ -507,8 +507,10 @@ def check_spec(root: Path, report: Report) -> None:
 
     - 无 kit.lock：视为未接入机器层（v1），不报错
     - 有 kit.lock 但缺字段：WARN，提示重跑安装器
-    - 格式非法 / 高于校验器支持：ERROR
+    - 格式非法 / 主次版本高于校验器支持：ERROR
     - 主版本落后：ERROR（需要迁移）；次版本落后：WARN
+    - 补丁版本差异（任一方向）：不报。补丁只做措辞澄清，不构成不兼容；
+      按主次版本比较后，发一个 PATCH 版规范不会让已接入仓库集体报红。
     """
     lock_path = root / "schema" / "kit.lock.json"
     if not lock_path.exists():
@@ -531,17 +533,18 @@ def check_spec(root: Path, report: Report) -> None:
         return
     repo_ver = tuple(int(x) for x in match.groups())
     cur_ver = tuple(int(x) for x in SPEC_VERSION.split("."))
-    if repo_ver > cur_ver:
+    repo_mm, cur_mm = repo_ver[:2], cur_ver[:2]
+    if repo_mm > cur_mm:
         report.add(
             "SPEC_NEWER", "ERROR", "schema/kit.lock.json",
-            f"仓库规范 {raw} 高于校验器支持的 {SPEC_VERSION}，请升级 repo-kit",
+            f"仓库规范 {raw} 高于校验器支持的 {SPEC_VERSION}（按主次版本比较），请升级 repo-kit",
         )
-    elif repo_ver[0] < cur_ver[0]:
+    elif repo_mm[0] < cur_mm[0]:
         report.add(
             "SPEC_OUTDATED", "ERROR", "schema/kit.lock.json",
             f"仓库规范 {raw} 落后主版本 {SPEC_VERSION}，需要按迁移文档升级",
         )
-    elif repo_ver[1] < cur_ver[1]:
+    elif repo_mm[1] < cur_mm[1]:
         report.add(
             "SPEC_OUTDATED", "WARN", "schema/kit.lock.json",
             f"仓库规范 {raw} 落后次版本 {SPEC_VERSION}",

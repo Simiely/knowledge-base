@@ -1,5 +1,38 @@
 # Changelog
 
+## [2.8.1] - 2026-11-18
+
+`SPEC_VERSION` 从「三段全等」改成「主/次版本比较」：补丁版规范不再让已接入仓库报红。
+
+### 背景
+
+规范 2.1.4 只是把 `AGENTS.md` 的拆分阈值从「150 词」澄清成「150 行」，无条款变化。
+但 `check_spec` 当时用完整三段比较 `repo_ver > cur_ver`，于是：
+
+- 安装器把 lock 写成 `spec_version: 2.1.4`，而 `SPEC_VERSION` 还是 `2.1.3` →
+  `SPEC_NEWER` **ERROR**，仓库自己的 CI 先红；
+- 想避开就得把 `SPEC_VERSION` 与 `spec.json` 一起抬，等于**每发一个 PATCH 规范
+  都必须发一个 kit 版**，否则第一个刷新 lock 的仓库就挂。
+
+也就是说，「补丁只做澄清」这条语义在检查器里根本没落地。本版按主/次版本比较，
+补丁差异（无论落后还是超前）一律不报。
+
+### Changed
+
+- `check_spec`：`repo_ver > cur_ver` → `repo_ver[:2] > cur_ver[:2]`。主版本落后仍
+  `SPEC_OUTDATED` ERROR、次版本落后仍 WARN、主/次版本超前仍 `SPEC_NEWER` ERROR，
+  只有补丁维度不再参与判定。
+- `SPEC_VERSION` 2.1.3 → 2.1.4，与 `spec.json` 对齐。
+- `REPO_STANDARD` §5 第 3 步：写明「常量落后不再硬报错，但仍要同步」。
+- `tests/test_spec_version.py`（5 项）：补丁落后/超前不报、次版本落后 WARN、
+  主版本落后 ERROR、次版本超前 ERROR、缺字段 WARN、格式非法 ERROR。
+
+### Compatibility
+
+- 只放宽、不收紧：原本能通过的仓库行为不变；原本因补丁差异报 `SPEC_NEWER` 的仓库
+  变为通过。
+- 现有 47 个 lock 全是 `spec_version: 2.1.3`，与旧常量一致，升级本版后无需改动任何仓库。
+
 ## [2.8.0] - 2026-11-18
 
 新增 `skills.install_prefix`：让「共享仓库根 `scripts/`、`docs/`」的技能仓

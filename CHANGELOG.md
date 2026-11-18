@@ -1,5 +1,32 @@
 # CHANGELOG
 
+## v1.2.4 — 2026-11-18
+
+规范 `2.1.4` / repo-kit `2.8.1` / 新项目模板 `1.1.0`（未变）。只澄清度量口径，条款语义未变。
+
+### 澄清
+
+- `AGENTS.md` 拆分阈值「150 词」→「150 行」（§二 / §五 / §七 三处，行数按 `wc -l` 计）。
+  实测 97 个仓：按词数 **96 个超标**（中位数约 409 词），按行数只有 3 个（343 / 208 / 179）。
+  一条 96% 仓库都违反、且编辑器里看不出的阈值，等于没有标准。
+
+### 工具
+
+- `audit-spec.ps1`：`state` 新增 **`behind-patch`**——补丁级落后只显示、不计入 issues；
+  主/次版本落后、缺失、格式非法、超前仍计 issues 并 `exit 1`。摘要行增加 `patch-behind=N`。
+- repo-kit **2.8.1**：`SPEC_VERSION` 2.1.3 → 2.1.4，并把完整三段比较改成**主/次版本比较**。
+  背景：旧逻辑下安装器把 lock 写成 2.1.4、常量停在 2.1.3，会立刻 `SPEC_NEWER` ERROR，
+  等于每发一个 PATCH 规范都必须再发一个 kit 版，否则第一个刷新 lock 的仓库先红。
+  新增 `tests/test_spec_version.py` 5 项（补丁两个方向 / 次版本 / 主版本 / 缺失与格式）。
+- 本仓库自己的 lock 刷到 kit `2.8.1` + spec `2.1.4`；其余 46 个 lock 不专门刷。
+
+### 验收
+
+- kit：`REPO CHECK PASS`、`GENERATE CHECK PASS`、`drift_probe 8/8`、90 项单测 OK。
+- 合成 13 个副本验证 `audit-spec`：`behind-patch` 不计 issues（退出码 0）；
+  `behind`（主/次）、`newer`、`v1`、`legacy`、`invalid` 与四类 flag 全部计入。
+- 本仓库：`REPO CHECK: PASS (pages=0)`、`KIT LOCK: PASS (v2.8.1, spec=2.1.4)`。
+
 ## v1.2.3 — 2026-11-16
 
 规范 `2.1.2` / repo-kit `2.5.3` / 新项目模板 `1.1.0`。补三处**执行面**缺口，条款语义未变。
