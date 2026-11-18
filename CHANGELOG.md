@@ -1,5 +1,53 @@
 # CHANGELOG
 
+## v1.2.6 — 2026-11-18
+
+规范 `2.1.4` / repo-kit `2.9.0`（未变）。13 个仓库接入 `link-only` 机器层，并修正盘点表的记账错误。
+
+### 接入（13 仓，四项全绿）
+
+`christmas-tree-storyboard` / `pc-upgrade-14700f` / `seedvr2-local-deploy` /
+`knowledge-retrieval-system` / `clash-rules-kit` / `sketchup-material-tools` /
+`vray-material-replacer` / `dark-design-style-guide` / `collab-plan-miniprogram` /
+`web-effects-lab` / `tv-film-player` / `baby-hair-braiding-guide` / `vmware-install-guide`
+
+统一 `link-only`：`schema/taxonomy.json` + `kit.lock.json`（kit 2.9.0 / 规范 2.1.4）、
+`tools/repo-kit/check_repo.py`、`.github/workflows/repo-check.yml`，AGENTS 补「机器层」节。
+13 个 `repo-check` 首次运行全部 success（ERROR=0、WARN=0），`KIT LOCK: PASS`。
+
+### 修的问题
+
+- **`collab-plan-miniprogram` 34 处断链**：`CHANGELOG.md` 32 处写成 `./09-pitfalls.md` 这类
+  根目录相对路径，实际文件在 `docs/` 下；`docs/09-pitfalls.md` 2 处 `./cloudfunctions/`
+  应为 `../cloudfunctions/`。目标文件都存在，纯路径写错。
+- 同仓 **7 处 `#-pNN-` 锚点改 `#pNN-`**：`slugify` 剥掉 emoji 后会 `strip("-")`，kit 的
+  锚点集是 `p01-…`，带前导连字符永远匹配不上。
+- **`vray-material-replacer` 5 处 `ANCHOR_BROKEN`**：`examples/材质构成报告_示例.md` 的
+  `#mat-overview` / `#mat-1..3` 是给文件头「AI 转换提示」的 id 契约（要求转换出的 HTML 用
+  `id="mat-1"`），不是本文件的标题锚点。改成行内代码，契约保留、断链消失。
+- **3 仓补 `DEVELOPMENT.md`**：`clash-rules-kit`（补充式/替换式两条路径 + 四步匹配）、
+  `baby-hair-braiding-guide`（固定 360:760 画布 + transform 缩放）、`vmware-install-guide`
+  （横向长卷 + `goTo`/`updateUI` 状态机）。
+- **2 个 1 字节空占位文件删除**：`20260704Fianl`（文件名拼写错）/ `20260704Final`，
+  内容都只有一个换行符、无任何引用，各自的 CHANGELOG 备注一并清掉。
+- `baby-hair-braiding-guide` 的「触摸滑动翻页」改为「点击左右半区翻页」——代码里只有
+  `click`，没有 `touchstart`/`touchend`；`vmware-install-guide` README 文件表
+  `vmware-install-guide.html` 改为实际文件名 `index.html`。
+
+### 勘误（盘点表）
+
+`clash-rules-kit` 原记「2026-10-26 补齐 `DEVELOPMENT.md`，基线 `a11d261`」不成立：该 sha 在
+仓库提交历史中不存在，文件也从未入库（当时只有 6 个文件、7 个提交，末次 2026-08-16）。
+本次真正补齐并重记基线。13 行的日期/基线同时回填为**基线行里的 sha**（不是「回填基线那次
+提交」的 sha——两者差一个提交，会让 `git diff <hash>` 多带一笔）。
+
+### 验收
+
+- 13 仓 `REPO CHECK: PASS`、`KIT LOCK: PASS`；GitHub Actions `repo-check` 全部 success。
+- 盘点表 13 行 sha 与各仓 AGENTS 基线行逐一对齐。
+- 未动：`local-llm-playbook`（进行中）、`knowledge-hub` / `tech-guides` / `invoice-guide`
+  （仍是「只登记」，本轮未纳入）。
+
 ## v1.2.5 — 2026-11-18
 
 规范 `2.1.4` / repo-kit **`2.9.0`** / 新项目模板 `1.1.0`（未变）。把 150 行阈值变成门禁。
