@@ -140,7 +140,12 @@ baseline 是**临时脚手架**，不是长期配置：它压制的是「已知�
 | `link-only` | 有自建内容管线的知识库 | 只查链接/锚点、入口与技能契约 | 否 |
 
 `link-only` 用于 rive-tips 这类仓库：文档不带 frontmatter，内容真源由它自己的
-`tools/sync-skill.ps1 -Check` 保证；repo-kit 只补链接与入口检查。
+`tools/sync-skill.ps1 -Check` 保证；repo-kit 只补链接与入口检查。它的摘要显示 `pages=0`，
+表示没有内容页，不代表没检查——链接与入口仍会报错。
+
+`skills` 仓如果共享仓库根的 `scripts/`、`docs/`（安装时把 `skills/*` 与它们平铺到同一层），
+要在 taxonomy 里设 `skills.install_prefix`（仓库里多出的那一层，通常是 `"skills"`）；
+不设则按技能目录自包含处理。
 
 四个 profile 的骨架都在 `新项目模板/profiles/`；`knowledge` 自模板 **1.1.0** 起才提供
 （此前规范列了它、模板却没有，导致这类仓库的 CI 只能手写）。

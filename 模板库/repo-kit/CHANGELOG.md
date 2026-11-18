@@ -1,5 +1,40 @@
 # Changelog
 
+## [2.8.0] - 2026-11-18
+
+新增 `skills.install_prefix`：让「共享仓库根 `scripts/`、`docs/`」的技能仓
+能在仓库内通过链接检查，而不必把链接改成安装后会断的写法。
+
+### 背景
+
+ae-tips 的技能目录在 `skills/<name>/`，安装时把 `skills/*` 与 `scripts/`、`docs/`
+平铺到 `~/.workbuddy/skills/`。于是 `SKILL.md` 里的 `../scripts/x` **在安装后正确**，
+在仓库里却解析到 `skills/scripts/x`（不存在）。2.7.4 及更早，这类仓只能二选一：
+改链接（安装后断）或关掉检查（失去保护）。
+
+审计时实测：仓库布局下 29 条"断链"，按安装布局搭 stage 后 **0 断链**。
+官方 Agent Skills 规范推荐技能自包含，但该仓明确要求"脚本只维护一份"，
+所以修工具而不是修内容。
+
+### Added
+
+- `skills.install_prefix`（可选）：声明仓库里比安装后多出的那一层目录（如 `"skills"`）。
+  命中 `skills.glob` 的文件，在真实位置不存在时，再按剥掉前缀的位置解析一次；
+  技能目录内部的 `references/...` 仍按真实位置解析。
+- `tests/test_skills_install_prefix.py`（3 项）：无前缀时报 `LINK_BROKEN`、有前缀时解析共享脚本、
+  技能目录内的本地引用不受影响。
+
+### Changed
+
+- `docs/usage.md` 7.1 / 7.3 与 `REPO_STANDARD` 第 2 节：补充共享脚本的接入方式，
+  并注明 `link-only` 的 `pages=0` 只表示"没有内容页"，链接与入口仍会检查。
+
+### Compatibility
+
+- **默认不启用**，行为与 2.7.4 完全一致。现有 skills 仓实测无越界链接
+  （davinci-skills 5 个、workbuddy-skills 15 个，全部在技能目录内），不受影响。
+- 39 个已接入仓无需升级；只有 ae-tips 这类共享脚本的仓需要设 `install_prefix`。
+
 ## [2.7.4] - 2026-11-18
 
 修一个会**静默丢内容**的存量仓库接入缺陷，并补上安装器的提示。

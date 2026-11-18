@@ -248,7 +248,13 @@ python scripts/check_repo.py --root . --json
 
   `names` 按**文件名**匹配（任意层级），`paths` 按**相对路径 glob** 匹配。
   两者都仍然参与链接检查，只是不再当内容页。也接受扁平列表（含 `/` 的进 `paths`）。
-- `skills`：技能 profile，`{glob, schema, name_matches_dir, min_description}`；`SKILL.md` 不套通用页面 schema。
+- `skills`：技能 profile，`{glob, schema, name_matches_dir, min_description, install_prefix}`；
+  `SKILL.md` 不套通用页面 schema。共享根目录脚本的仓库（安装时把 `skills/*` 与
+  `scripts/`、`docs/` 平铺到同一层）把 `install_prefix` 设成仓库里多出的那一层（如 `"skills"`），
+  校验时会在真实位置不存在的情况下，再按安装后布局解析一次。
+
+> `link-only` 仓的摘要会显示 `pages=0`：它没有内容页，但不等于没检查——链接与入口
+> 仍会报 `LINK_BROKEN` / `ENTRY_DUP`。
 
 **旧键已废弃但仍生效**（`context_files` / `exempt_basenames` / `entry_files` / `link_only_files`），
 读到时会报一条 `TAXONOMY_LEGACY_KEY`（WARN），迁移用：
@@ -342,7 +348,8 @@ v1 baseline 仍可读；v2 用 fingerprint，message 小改不会让整条 basel
   "glob": "skills/**/SKILL.md",
   "schema": "schema/skills.schema.json",
   "name_matches_dir": true,
-  "min_description": 40
+  "min_description": 40,
+  "install_prefix": "skills"
 },
 "frontmatter_exempt": {
   "names": [],
@@ -353,6 +360,12 @@ v1 baseline 仍可读；v2 用 fingerprint，message 小改不会让整条 basel
 - `SKILL.md` 校验 name 格式、name 与目录一致、description 最小长度。
 - `references/*.md` 只做链接检查，不要求 frontmatter。
 - `SKILL.md` 仍会被链接检查；坏链接照样报 `LINK_BROKEN`。
+- `install_prefix` 只给「共享脚本」的技能仓用：仓库里是 `skills/<name>/`，
+  安装后是 `<skills 根>/<name>/`，共享的 `scripts/`、`docs/` 与技能目录同级。
+  设了它之后，`../scripts/...` 这类为安装布局写的链接在仓库内也能通过；
+  技能目录内部的 `references/...` 仍按真实位置解析。
+  官方规范推荐技能自包含（`scripts/` 放在技能目录里）；`install_prefix` 是
+  「脚本只维护一份」的兼容选项，不是首选。
 
 ## 9. 贡献表面
 
