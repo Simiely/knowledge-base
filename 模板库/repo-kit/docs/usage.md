@@ -217,6 +217,7 @@ related: ["code.config.retry:depends-on"]
 | `TRUTH_DOCS_NOT_UPDATED` | 真源变了，但映射文档一个都没变 | 同一个 PR 改文档；纯重构用 `--allow-truth-only` |
 | `ADR_DUP` / `ADR_INDEX` / `ADR_NAME` | ADR 编号重复 / 索引漏登记 / 文件名不合规 | 修编号、索引或文件名 |
 | `ENTRY_DUP` | 出现第二份完整规则文件 | 改成一行指向 `AGENTS.md` |
+| `AGENTS_TOO_LONG` | `AGENTS.md` 超过 150 行（规范 2.1.4，按 `wc -l` 计） | 细节搬进 `rules/*.md`；生成物要改 `schema/agents.template.md` 再 `generate.py --write` |
 | `GENERATED_MISSING` | 生成产物缺失 | 跑 `generate.py --write` |
 | `GENERATED_STALE` | 生成产物过期 | 跑 `generate.py --write` |
 | `GENERATED_BLOCKED` | `AGENTS.md` 是手写文件，且没有 `schema/agents.template.md` | 二选一：把它从 `generated_files` 移除（保留手写），或先补模板再生成。生成器不会覆盖它 |

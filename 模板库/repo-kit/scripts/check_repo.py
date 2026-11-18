@@ -47,7 +47,7 @@ LINK_SCHEMES = ("http://", "https://", "mailto:", "tel:", "javascript:", "data:"
 ADR_RE = re.compile(r"ADR-(\d{4})-[a-z0-9-]+\.md$")
 ID_RE = re.compile(r"^[a-z0-9]+(\.[a-z0-9-]+)+$")
 PITFALL_FIELDS = ("summary", "symptom", "cause", "detect", "avoid", "recover", "applies_to", "severity")
-KIT_VERSION = "2.8.1"
+KIT_VERSION = "2.9.0"
 SPEC_VERSION = "2.1.4"
 
 
@@ -405,6 +405,26 @@ def is_generated(rel: str, generated: set[str]) -> bool:
 
 
 GENERATED_MARKER = "生成文件，勿手改"
+AGENTS_MAX_LINES = 150  # 规范 2.1.4 的「门面」阈值，见 单项目规范 §二/§七
+
+
+def agents_length_problem(root: Path) -> tuple[int, str] | None:
+    """AGENTS.md 超过 150 行时返回 (行数, 修法提示)，否则 None。
+
+    计数口径是**文件总行数**（等价 `wc -l`），与规范正文一致——不是非空行，
+    也不是词数（2.1.4 之前的「150 词」实测 97 个仓里 96 个超标，等于死条文）。
+    """
+    path = root / "AGENTS.md"
+    if not path.exists():
+        return None
+    total = len(path.read_text(encoding="utf-8", errors="replace").splitlines())
+    if total <= AGENTS_MAX_LINES:
+        return None
+    if (root / "schema/agents.template.md").exists():
+        hint = "它是生成物：把细节搬进 rules/*.md，再改 schema/agents.template.md 后重跑 generate.py --write"
+    else:
+        hint = "把细节搬进 rules/*.md，主文件只留门面 + @引用"
+    return total, hint
 
 
 def agents_conflict(root: Path, generated: set[str]) -> bool:
@@ -1148,6 +1168,15 @@ def main() -> int:
             lines = [ln for ln in p.read_text(encoding="utf-8", errors="replace").splitlines() if ln.strip()]
             if len(lines) > 5 or "AGENTS.md" not in "\n".join(lines):
                 report.add("ENTRY_DUP", "ERROR", name, "只允许一行指向 AGENTS.md 的指针，禁止第二份完整规则")
+
+    # 门面阈值：AGENTS.md 超过 150 行说明细节没搬走（规范 2.1.4）
+    problem = agents_length_problem(root)
+    if problem is not None:
+        total, hint = problem
+        report.add(
+            "AGENTS_TOO_LONG", "ERROR", "AGENTS.md",
+            f"{total} 行 > {AGENTS_MAX_LINES} 行（规范 2.1.4 的门面阈值）。{hint}",
+        )
 
     # 生成产物存在性（内容是否最新由 generate.py --check 负责）
     if agents_conflict(root, generated):

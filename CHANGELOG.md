@@ -1,5 +1,30 @@
 # CHANGELOG
 
+## v1.2.5 — 2026-11-18
+
+规范 `2.1.4` / repo-kit **`2.9.0`** / 新项目模板 `1.1.0`（未变）。把 150 行阈值变成门禁。
+
+### 新增
+
+- **`AGENTS_TOO_LONG`（ERROR）**：`AGENTS.md` 总行数（`wc -l`）> 150 即报，报错按仓库形态
+  给两种修法（手写 → 拆 `rules/`；生成物 → 改 `schema/agents.template.md` 再重跑 generate）。
+- `tests/test_agents_length.py` 3 项：150 行通过 / 151 行报错且提示手写修法 / 有模板时提示改模板。
+- `docs/usage.md` 与 `REPO_STANDARD` 接入清单同步该规则。
+
+### Why
+
+2.1.4 只是把阈值写成文字，**没有任何检查**——fleet 里 707 / 244 / 226 行三个仓只能靠人工
+盘点发现。写在规范里、没有工具守着的条款迟早漂（2.1.3 的「四种豁免写法」是同一类）。
+选 ERROR 不选 WARN：`PASS` 只统计 ERROR，常驻 WARN 等于没有规则；且规则逐仓生效，
+升级那一刻本来就在动这个仓，当场拆或写 baseline 都行。
+
+### 验收
+
+- kit：`REPO CHECK PASS`、`GENERATE CHECK PASS`、`drift_probe 8/8`、93 项单测 OK。
+- 真实仓验证：把本仓 `AGENTS.md` 灌到 194 行 → `AGENTS_TOO_LONG` 命中并 FAIL；还原后 PASS。
+- fleet：本地 16 仓全部 ≤150 行（最大 video-upscale-deploy 127；本轮拆完的 4 仓 72/116/125/28）。
+- 本仓库 lock 刷到 kit `2.9.0` + spec `2.1.4`；其余仓仍是旧 kit，规则随下次升级生效。
+
 ## v1.2.4 — 2026-11-18
 
 规范 `2.1.4` / repo-kit `2.8.1` / 新项目模板 `1.1.0`（未变）。只澄清度量口径，条款语义未变。

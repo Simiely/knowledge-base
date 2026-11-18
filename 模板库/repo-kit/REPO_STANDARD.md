@@ -220,6 +220,8 @@ baseline 是**临时脚手架**，不是长期配置：它压制的是「已知�
       只放运行/构建依赖（代码仓库常见只有打包工具）
 - [ ] `taxonomy.json` 的 `include` 与 `entry_files` 覆盖**四件套**（`README` / `AGENTS` /
       `DEVELOPMENT` / `CHANGELOG`），否则四件套的体量阈值永远不会被检查
+- [ ] `AGENTS.md` ≤ **150 行**（`wc -l`，规范 2.1.4）：超了报 `AGENTS_TOO_LONG`（kit 2.9.0 起）。
+      细节进 `rules/*.md`，主文件只留门面 + `@引用`；生成物则改 `schema/agents.template.md`
 - [ ] `taxonomy.json` 的 `generated_files` 决定**生成范围**：`AGENTS.md` 打算手写就把它
       从这个清单里去掉（`generate.py` 自 2.5.1 起尊重该清单）；打算生成就必须同时有
       `schema/agents.template.md`。两者都不做会报 `GENERATED_BLOCKED` 并拒绝写入（2.7.4 起）

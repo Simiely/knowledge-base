@@ -1,5 +1,39 @@
 # Changelog
 
+## [2.9.0] - 2026-11-18
+
+新增 `AGENTS_TOO_LONG`：把规范 2.1.4 的「`AGENTS.md` ≤ 150 行」从文字变成可执行断言。
+
+### 背景
+
+2.1.4 只是把阈值从「150 词」澄清成「150 行」，**没有任何检查**。结果 fleet 里立刻有
+3 个仓违规（blender-tips 707 行 / content-archive 244 / blender-render-console 226），
+全靠人工盘点才发现——和 2.1.3 之前「四种豁免写法」被写坏是同一类问题：写在规范里、
+没有任何工具守着的条款，迟早漂。
+
+### Added
+
+- `AGENTS_TOO_LONG`（**ERROR**）：`AGENTS.md` 总行数（等价 `wc -l`）> **150** 即报。
+  报错信息按仓库形态给两种修法：
+  - 手写：细节搬进 `rules/*.md`，主文件留门面 + `@引用`；
+  - 有 `schema/agents.template.md`（生成物）：改模板后重跑 `generate.py --write`，
+    直接手改 `AGENTS.md` 会在下次生成时被覆盖。
+- `tests/test_agents_length.py`（3 项）：150 行通过、151 行报错且提示手写修法、
+  有模板时提示改模板。
+
+### Why 是 ERROR 而不是 WARN
+
+`PASS` 只统计 ERROR，常驻 WARN 等于没有规则（本仓 2.1.2 的 `LINK_DIR` 已经证明过一次）。
+且这条规则的**生效是逐仓的**——只有把 kit 升到 2.9.0 的仓库才会被拦，升级那一刻本来就
+在动这个仓库，当场拆或写进 `schema/check-baseline.json` 都可以。
+
+### Compatibility
+
+- 只新增、不改旧规则：已通过的仓库行为不变，唯一新增的失败条件是 `AGENTS.md` > 150 行。
+- 实测 fleet：本地 16 个仓全部 ≤150 行（最大 video-upscale-deploy 127）；
+  本轮已拆的 4 个仓为 72 / 116 / 125 / 28 行。
+- `SPEC_VERSION` 保持 2.1.4、`min_kit` 保持 2.7.0：本版不提新要求，只是开始执行已有条款。
+
 ## [2.8.1] - 2026-11-18
 
 `SPEC_VERSION` 从「三段全等」改成「主/次版本比较」：补丁版规范不再让已接入仓库报红。
