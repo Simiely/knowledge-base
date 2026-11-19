@@ -92,7 +92,11 @@ function Get-RepoFlags([string]$root) {
     if (Test-Path -LiteralPath $wfDir) {
         $wired = $false; $changed = $false; $fetchDepth = $false
         foreach ($wf in Get-ChildItem -LiteralPath $wfDir -Filter *.yml -File -ErrorAction SilentlyContinue) {
-            $text = Get-Content -LiteralPath $wf.FullName -Raw
+            # 剔除整行注释再匹配：注释里提到 --changed-since 不代表真的用了它。
+            # 例：ai-dev-guardrails 的 repo-check.yml 用注释解释"为什么不用"，
+            # 曾被裸字符串匹配命中，在舰队审计里长期误报 ci-no-fetch-depth。
+            $text = (Get-Content -LiteralPath $wf.FullName |
+                Where-Object { $_ -notmatch '^\s*#' }) -join "`n"
             if ($text -match 'check_repo\.py') { $wired = $true }
             if ($text -match '--changed-since') { $changed = $true }
             if ($text -match 'fetch-depth:\s*0') { $fetchDepth = $true }
