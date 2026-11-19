@@ -1,6 +1,6 @@
 # AGENTS.md · knowledge-base
 
-> 📌 **文档基线**（`docs_baseline`）：2026-11-19（`87f4433`）—— 规范 2.1.5 / kit 2.9.1：标准自检回路 + 门面口径对齐
+> 📌 **文档基线**（`docs_baseline`）：2026-11-19（`a46a76c`）—— 规范 2.1.5 / kit 2.9.1：标准自检回路 + 门面口径对齐
 > 门面数字改 66/2/2、四个 profile、两类基线分开；`tools/verify-standard.py` 保证版本不再漂
 > 更新文档或模板后，请更新此行，并在 CHANGELOG 追加版本
 
