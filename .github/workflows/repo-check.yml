@@ -27,6 +27,10 @@ jobs:
       - run: python -m pip install -r requirements.txt
       - name: Invariants (link-only)
         run: python tools/repo-kit/check_repo.py --root .
+      - name: Standard invariants (本仓口径)
+        run: python tools/verify-standard.py
+      - name: Standard guard self-test (正对照)
+        run: python tools/verify-standard.py --self-test
       - name: Kit lock
         run: pwsh tools/update-repo-kit.ps1 -Check
 
@@ -44,10 +48,13 @@ jobs:
         run: pwsh -NoProfile -File 模板库/新项目模板/新建仓库.ps1 -Name smoke-skills -Profile skills -Target $RUNNER_TEMP/smoke-skills
       - name: link-only template
         run: pwsh -NoProfile -File 模板库/新项目模板/新建仓库.ps1 -Name smoke-link -Profile link-only -Target $RUNNER_TEMP/smoke-link
+      - name: knowledge template
+        run: pwsh -NoProfile -File 模板库/新项目模板/新建仓库.ps1 -Name smoke-knowledge -Profile knowledge -Target $RUNNER_TEMP/smoke-knowledge
       - name: Generated artifacts are up to date
         run: |
           python "$RUNNER_TEMP/smoke-monorepo/tools/repo-kit/generate.py" --root "$RUNNER_TEMP/smoke-monorepo" --check
           python "$RUNNER_TEMP/smoke-skills/tools/repo-kit/generate.py" --root "$RUNNER_TEMP/smoke-skills" --check
+          python "$RUNNER_TEMP/smoke-knowledge/tools/repo-kit/generate.py" --root "$RUNNER_TEMP/smoke-knowledge" --check
 
   kit-selftest:
     runs-on: ubuntu-latest

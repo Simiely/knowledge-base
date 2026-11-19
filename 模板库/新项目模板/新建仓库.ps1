@@ -48,7 +48,8 @@ if (-not (Test-Path -LiteralPath ([System.IO.Path]::Combine($kitDir, 'schema', '
 
 $ownerName = $Owner.TrimStart('@').ToLower()
 $date = Get-Date -Format 'yyyy-MM-dd'
-# 版本与安装器同源：读 kit 的 taxonomy.json，不再单独维护 VERSION 文件
+# {{KIT_VERSION}} 占位符与安装器同源：读 kit 的 taxonomy.json。
+# 模板自身版本另由 新项目模板/VERSION 记录（两条独立版本线，kit 升级不改写它）。
 $kitVersion = (Get-Content -LiteralPath ([System.IO.Path]::Combine($kitDir, 'schema', 'taxonomy.json')) -Raw -Encoding UTF8 | ConvertFrom-Json).version
 
 if (Test-Path -LiteralPath $targetDir) {

@@ -1,7 +1,7 @@
 # AGENTS.md · knowledge-base
 
-> 📌 **文档基线**：2026-11-18（`0fae94f`）—— 规范 2.1.4 / kit 2.9.0：13 仓接入机器层 + 盘点表勘误
-> 「150 词」澄清为「150 行」、补丁版规范不再报 `SPEC_NEWER`、盘点脚本增 `behind-patch`
+> 📌 **文档基线**（`docs_baseline`）：2026-11-19（`87f4433`）—— 规范 2.1.5 / kit 2.9.1：标准自检回路 + 门面口径对齐
+> 门面数字改 66/2/2、四个 profile、两类基线分开；`tools/verify-standard.py` 保证版本不再漂
 > 更新文档或模板后，请更新此行，并在 CHANGELOG 追加版本
 
 本仓库是个人经验库，也是所有仓库的**上游**：`模板库/` 提供规范与可复制骨架，
@@ -23,6 +23,7 @@
 
 ```bash
 python tools/repo-kit/check_repo.py --root .
+python tools/verify-standard.py
 pwsh tools/update-repo-kit.ps1 -Check
 pwsh 模板库/新项目模板/新建仓库.ps1 -Name demo -Profile monorepo -Target ..\demo
 ```

@@ -1,6 +1,6 @@
 # 单项目（单仓库）文档规范 · 使用说明
 
-> 规范版本 v2.1.4 · 2026-11-18 · 变更见 [CHANGELOG.md](CHANGELOG.md)
+> 规范版本 v2.1.5 · 2026-11-19 · 变更见 [CHANGELOG.md](CHANGELOG.md)
 
 > 让**单个仓库**的内容模块化、清晰合理、可快速提取，并与 knowledge-base 无缝衔接。
 > 适用：所有个人项目仓库（AE 脚本 / C4D 插件 / Blender 插件 / Web 项目 / 小程序）。
@@ -81,7 +81,7 @@ pwsh 模板库/新项目模板/新建仓库.ps1 -Name my-tool -Profile monorepo 
 四个 profile：
 
 - `monorepo`：代码仓库，带 `docs/` + 生成索引
-- `knowledge`：以文档为主的知识仓/应用仓，页面带 frontmatter 契约 + pitfall/freshness 检查（脚手架见 repo-kit 上游 `knowledge` profile；`新建仓库.ps1` 暂只支持另外三个）
+- `knowledge`：以文档为主的知识仓/应用仓，页面带 frontmatter 契约 + pitfall/freshness 检查（`新建仓库.ps1` 与四个 profile 均已支持）
 - `skills`：技能仓库，带 `SKILL.md` 契约
 - `link-only`：已有内容管线的文档仓，只查链接/锚点，不要求 frontmatter
 
@@ -227,3 +227,28 @@ CI: PASS
 **总表**：你的用户库根目录的 `仓库盘点表.md`（可选,模板见 [`初始化说明.md`](../初始化说明.md) 第四节）是全部仓库的断点索引（领域/四件套状态/重写日期/基线 commit）。更新仓库后必须回填。
 
 **核对方法**：想确认某仓库"重写后改了什么"，用 `git log --oneline <基线hash>..HEAD` 或 `git diff <基线hash> HEAD`。
+
+**两类基线不要混**（2026-11-19 对齐时确认）：
+
+- `AGENTS.md` 顶部写的是 **`docs_baseline`**：该仓文档同步到的 commit，与根 `CHANGELOG.md`
+  最新版本对应。
+- `用户库/仓库盘点表.md` 的「索引 / 总管」分区写的是 **`machine_baseline`**：kit / 规范升级
+  落地的 commit，另在该行标注 `spec_version`。
+
+两者可以指向不同 commit，不必强行统一；**改字段名比改数值更不容易复发**。
+
+**仅回填盘点表算不算一次版本变更**：**不算**。批量维护（只回填基线 hash、不改该仓代码或文档）
+可以单独提交，不要求同步追加 CHANGELOG 或更新 AGENTS 基线行；只有骨架 / 规范 / 机器层变更
+才走上面四步。2026-11-19 曾有 6 次「仅改盘点表」的提交，此前因口径未定义而绕开了四步回填。
+
+**四步回填的可检查产物**（不要靠人记）：
+
+| 步 | 产物 | 怎么验 |
+|---|---|---|
+| ① | 该仓 `CHANGELOG.md` 有新版本节 | `git diff` 可见 |
+| ② | `AGENTS.md` 基线行有新日期与合法 commit hash | `git cat-file -e <hash>^{commit}`（完整克隆下） |
+| ③ | 盘点表该行已回填 | `git diff` 可见 |
+| ④ | 本仓 `python tools/verify-standard.py` 返回 `STANDARD CHECK: PASS` | 本地与 CI 同一份脚本 |
+
+> 这条清单是维护辅助，**不做成每次变更的必需 CI 检查**：Keep a Changelog 2.0.0 明确反对
+> 把「必须改 CHANGELOG」做成门禁，会让人为过检查塞噪音行。

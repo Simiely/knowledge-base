@@ -19,7 +19,7 @@ knowledge-base/
 ├── CHANGELOG.md           版本历史
 ├── 模板库/                骨架（零个人数据）
 │   ├── 单项目规范/         人读规范：4 文件模型 + 机器层
-│   ├── 新项目模板/         可复制骨架：base + monorepo/skills/link-only
+│   ├── 新项目模板/         可复制骨架：base + monorepo/skills/knowledge/link-only
 │   ├── repo-kit/           机器校验工具（版本单一来源）
 │   ├── 模板/               经验条目模板
 │   └── 解决方案/ 等        索引空壳
@@ -48,7 +48,7 @@ knowledge-base/
 **TL;DR**：模板是片段，按目标仓库根目录写相对链接；不要在本仓库里直接检查模板。
 
 - 根因：`docs/index.md` 里的 `../README.md` 指向生成后的根目录，模板目录里没有这个文件。
-- 解决：知识库自检忽略 `模板库/新项目模板/**`；CI 的 `template-smoke` 复制三个 profile 到临时目录后跑检查。
+- 解决：知识库自检忽略 `模板库/新项目模板/**`；CI 的 `template-smoke` 复制四个 profile 到临时目录后跑检查。
 - 预防：改模板后必须让 `template-smoke` 全绿，不能只看模板目录。
 
 ### 问题：模板与 kit 版本漂移

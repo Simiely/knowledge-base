@@ -1,5 +1,43 @@
 # CHANGELOG
 
+## v1.2.7 — 2026-11-19
+
+把 11-19 的九次提交汇总成一次版本记录，并补齐本仓自己的**标准自检回路**。
+规范 `2.1.5` / repo-kit `2.9.1` / 新项目模板 `1.1.0`（均未变，本版只做对齐）。
+
+### 本版之前（11-19 已推送的九次提交）
+
+- `7511073`：`fix(kit)` 把机器层升到 kit 2.9.1 / 规范 2.1.5，补「四类文件归属」表与
+  `tests/test_encoding.py`；安装器补 UTF-8 BOM（此前含中文却无 BOM，Windows PowerShell 5.1
+  下 `Get-Help` 帮助文本乱码）。
+- `4624b9d` / `279cf62`：两个 `fix(audit-spec)`，分别修「整行注释误报 `ci-no-fetch-depth`」
+  与「PS 5.1 读无 BOM YAML 吞行」。
+- `5d0a1bb` / `5ae37f2` / `c26fc6d` / `14f5a5c` / `f80f66c` / `87f4433`：六次盘点表基线回填。
+
+这九次提交没有一次动过根 `AGENTS.md`、根 `CHANGELOG.md` 或 `.github/workflows/repo-check.yml`——
+规范 §十 的「四步回填」实际只做了第 ③ 步，门面因此停在 2.1.4 / 2.9.0。
+
+### 本次对齐
+
+- **修机器层漂移**：`schema/taxonomy.json` 的 `version` 由 `2.7.3` 回到 `2.9.1`，与
+  `kit.lock.json` 一致。该值自 11-17 加入 `skew` 检查起就没同步过；本仓 CI 从未比较过它。
+- **装自检回路**：新增 `tools/verify-standard.py`，把版本一致、profile 集合一致、CI 接线、
+  基线格式变成可机读断言；`self-check` 接 `--self-test` 正对照（故意注入错误确认它真的会红）。
+- **补 CI 覆盖**：`template-smoke` 增加 `knowledge` profile，`generate --check` 同步覆盖四个
+  profile（`CHANGELOG` v1.2.3 的验收写过四 profile，但 CI 从接入起只跑三个）。
+- **统一文字口径**：四个 profile（原写三个）、门面篇数（66 / 2 / 2）、分区标题 67、
+  repo-kit README 与 `REPO_STANDARD` 去掉写死版本、规范 README 抬头 → v2.1.5。
+- **明确两类基线**：`AGENTS.md` 记 `docs_baseline`，盘点表「索引 / 总管」记
+  `machine_baseline`，不再强行统一；规范 §十 补「仅回填盘点表不算版本变更」与四步回填的
+  可检查产物清单。
+- **保留两条版本线**：`新项目模板/VERSION`（模板 1.1.0）与 `{{KIT_VERSION}}`（读 kit
+  taxonomy）互不覆盖，只把脚手架注释改清楚。
+
+### 未做（有意）
+
+不改历史 CHANGELOG 条目、不改 `spec.json` 的 `min_kit`、不动 `kit.lock.json` 的四个托管文件哈希、
+不批量刷下游 67 仓、不启用分支保护或 Release Please、不给两个非托管 `.ps1` 补 BOM。
+
 ## v1.2.6 — 2026-11-18
 
 规范 `2.1.4` / repo-kit `2.9.0`（未变）。13 个仓库接入 `link-only` 机器层，并修正盘点表的记账错误。
