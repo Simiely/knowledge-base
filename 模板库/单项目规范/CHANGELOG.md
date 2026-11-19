@@ -4,6 +4,58 @@
 kit 描述“用哪个校验器检查”。仓库通过 `schema/kit.lock.json` 的 `spec_version`
 字段声明自己按哪一版规范整理。
 
+## [2.1.5] - 2026-11-19
+
+补两个此前没写的口径：**格式规则的作用域**、**仓自有检查算不算完成定义**。
+两者都是这次在真实仓库上撞出来的，不是推演。
+
+### Added
+
+- §三 新增「四类文件归属」表：kit 托管 / 生成物 / 仓自有配置 / 仓自有内容，
+  每类给出判定依据、谁定字节、谁校验、下游能否改。
+  下游的格式规则（BOM、行尾、缩进、键序、格式重排……）**默认只作用于后两类**。
+- 完成定义补一条：仓里若有**自有的机器检查**（`tools/check_text.py`、`pytest`、
+  `guardrails lint-manual` 之类），它同样是完成定义的一部分，且**必须接进 CI**。
+
+### Why
+
+`video-upscale-deploy` 的 BOM 规则要求「所有 `.ps1` 必须带 BOM」，而
+`tools/update-repo-kit.ps1` 被 `schema/kit.lock.json` 按字节锁定——加 BOM 就 `KIT LOCK: FAIL`，
+不加就违反 BOM 规则。**两条规则同时成立，规则永远不可能绿。**
+
+逐层看下来，三层各有各的问题，而规范一层都没说：
+
+1. 下游规则越界了：一个字节由上游决定的文件，被下游的格式规则覆盖。
+2. 上游发行物本身有瑕疵：该脚本含 4 处非 ASCII（帮助文本 + 注释）却没 BOM，
+   `Get-Help` 读出来是乱码、`Get-Content` 把 183 行读成 182 行（实测能解析、能跑，
+   只是读不对；下游那份问题记录的「解析失败」是过强说法）。
+3. 归属表不存在，所以前两条谁都没觉得有问题。
+
+业界同类机制都靠「目录/文件归属」而不是靠自觉：lint-staged 官方文档要求把 vendor 目录
+写进 **linter 的 ignore**，而不是改 vendor 里的文件；pip 用 `src/pip/_vendor/vendor.txt` +
+`tools/vendoring/patches/`，CI 跑 `vendoring sync` 后要求 `git diff --exit-code`；
+npm 12 的原生补丁把补丁哈希写进 `package-lock.json`，补丁变了而锁没变就 `EPATCHFAILED`。
+共同点：**改动显式记录、哈希进锁、由 tooling 判定**，没有一处是「让人记得别改」。
+
+### Changed
+
+- 完成定义那段补了「四项全绿的含义」与仓自有检查的关系：`video-upscale-deploy` 的
+  BOM 检查红了半年没人发现，根因是它既不在 CI 里，也不在那四项里——
+  写在 `AGENTS.md` 的「常用命令」里、实际没人跑的检查等于没有。
+
+### 工具（不改变任何要求，不触发仓库升级）
+
+- repo-kit **2.9.1**：`tools/update-repo-kit.ps1` 补 BOM，新增 `tests/test_encoding.py`
+  （仓内 `.ps1` 要么纯 ASCII、要么带 BOM）。`check_repo.py` 判定逻辑未改。
+- `min_kit` 保持 **2.7.0**：本版只补口径，不提新要求，旧 kit 仍可执行。
+- `check_spec` 按主/次版本比较，**补丁差异不报**：本版不会让已接入仓库集体报红。
+
+### 升级
+
+不需要。存量仓库的 `spec_version: 2.1.4` 在盘点里显示为 `behind-patch`，
+下次真正修改该仓库时安装器会顺手写成 2.1.5。若仓里已有自写的机器检查，
+**现在就可以把它接进 CI**——这一条不必等升级。
+
 ## [2.1.4] - 2026-11-18
 
 只澄清度量口径，**无条款变化**：`AGENTS.md` 的拆分阈值「150 词」→「150 行」。

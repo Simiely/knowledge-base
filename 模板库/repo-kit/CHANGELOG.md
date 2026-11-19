@@ -1,5 +1,60 @@
 # Changelog
 
+## [2.9.1] - 2026-11-19
+
+`tools/update-repo-kit.ps1` 补 BOM，并新增 `tests/test_encoding.py` 让这类问题**只能在上游修**。
+
+### 背景
+
+`video-upscale-deploy` 的 `tools/check_text.py` 有条铁律：所有 `.ps1` 必须带 UTF-8 BOM。
+它和 `schema/kit.lock.json` 撞在一起——`update-repo-kit.ps1` 含 4 处非 ASCII
+（15 行 `.DESCRIPTION` 帮助文本、165–167 行注释）却没 BOM，而该文件被 lock 按字节锁定：
+
+- 下游补 BOM → `DRIFT tools/update-repo-kit.ps1` → `KIT LOCK: FAIL`，exit 1；
+- 不补 → 下游自己的 BOM 规则报红。
+
+**两条规则都成立，规则就永远不可能绿。** 这不是存量债务，是归属边界没建模：
+一个字节由上游决定的文件，被下游的格式规则覆盖了。
+
+关键在 `update-repo-kit.ps1` 的 `Get-Sha256`：按原始字节算哈希，只把 CRLF 归一化成 LF，
+**不做 BOM 归一化**。所以下游无法靠「改自己的副本」解决，只能回到上游改。
+
+### 实测（本次修的就是这个，不是照抄惯例）
+
+锁版脚本在 PS 5.1 下的真实行为：
+
+- **能解析**：`0 errors`，`pwsh`/Windows PowerShell 都能跑，`-Check` 返回 `KIT LOCK: PASS`、exit 0。
+  下游那份问题记录写的「直接解析失败」是过强的说法——取决于非 ASCII 出现在哪个位置，
+  出现在注释里通常不炸。
+- **帮助文本一定坏**：`Get-Help` 读 `.DESCRIPTION` 时按 ANSI 解码，中文变乱码。
+- **行数会少**：`Get-Content`（默认 ANSI）把 183 行读成 **182** 行，吞掉一个换行。
+
+即「能跑但读不对」。补 BOM 后两者都正常，`7793 → 7796` 字节。
+安装器用 `Copy-Item` 落盘（第 134 行），BOM 会原样带下去；只有 lock JSON 走
+`Write-Utf8NoBom`（第 162 行），不含用户可见文本。
+
+### Added
+
+- `tests/test_encoding.py`：仓内每个 `.ps1` 要么**纯 ASCII**，要么**带 BOM**，
+  否则失败并列出文件名。判定标准比下游那条铁律窄一档——纯 ASCII 不需要 BOM，
+  这与 PSScriptAnalyzer 的 `PSUseBOMForUnicodeEncodedFile` 一致。
+  自测有 `assertTrue(files)` 兜底，`rglob` 一个都没找到时不会「假绿」。
+
+### Compatibility
+
+- **不提新要求**：`check_repo.py` 的判定逻辑一行未改，`KIT_VERSION` 只用在 `--help`
+  的描述文字里，从不与仓库的 `kit.lock.version` 比较。
+- `SPEC_VERSION` 2.1.4 → **2.1.5**（与 `spec.json` 对齐；2.8.1 起按主/次版本比较，
+  补丁差异本就不参与判定，这里是照「常量仍要同步」的约定顺手对齐）。
+- `min_kit` 保持 2.7.0。
+- 已接入仓库**不必立即升级**：它们手上那份旧副本与自己的 lock 自洽，`-Check` 照常
+  `PASS`。下次跑 `update-repo-kit.ps1` 时新字节自然落下、lock 当场重算，无需额外动作。
+- 但 `tools/update-repo-kit.ps1` **本身例外**：安装器第 152 行把自己（`$PSCommandPath`）
+  写进锁，从不覆盖自身，所以存量仓库的安装器不会因升级而刷新，也就长期停在无 BOM 版。
+  新仓不受影响——`新建仓库.ps1` 第 104 行从本模板拷一份过去。存量仓若想拿到 BOM 版：
+  从 `模板库/repo-kit/tools/` 手工拷一份覆盖，再跑一次安装器刷新锁哈希。
+  **不拷也不影响**：`check_text.py` 按 lock 的 `files` 键豁免 kit 托管文件。
+
 ## [2.9.0] - 2026-11-18
 
 新增 `AGENTS_TOO_LONG`：把规范 2.1.4 的「`AGENTS.md` ≤ 150 行」从文字变成可执行断言。

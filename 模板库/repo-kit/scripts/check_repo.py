@@ -47,8 +47,8 @@ LINK_SCHEMES = ("http://", "https://", "mailto:", "tel:", "javascript:", "data:"
 ADR_RE = re.compile(r"ADR-(\d{4})-[a-z0-9-]+\.md$")
 ID_RE = re.compile(r"^[a-z0-9]+(\.[a-z0-9-]+)+$")
 PITFALL_FIELDS = ("summary", "symptom", "cause", "detect", "avoid", "recover", "applies_to", "severity")
-KIT_VERSION = "2.9.0"
-SPEC_VERSION = "2.1.4"
+KIT_VERSION = "2.9.1"
+SPEC_VERSION = "2.1.5"
 
 
 # ---------------------------------------------------------------------------

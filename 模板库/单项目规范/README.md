@@ -33,6 +33,25 @@
 | 人层 | 4 文件与生长式拆分 | `README.md` / `AGENTS.md` / `DEVELOPMENT.md` / `CHANGELOG.md` |
 | 机器层 | 内容契约、链接/锚点、真源、生成产物、版本锁 | `tools/repo-kit/`、`schema/`、`schema/kit.lock.json`、CI |
 
+**文件归属决定可改性。** 同一个仓里四类文件的字节来源不同，动手前先查这一栏。
+「下游的格式规则」（BOM、行尾、缩进、键序、格式重排……）**默认只作用于后两类**：
+
+| 文件类别 | 怎么判定 | 谁定字节 | 谁校验 | 下游能否改 |
+|---|---|---|---|---|
+| kit 托管 | `schema/kit.lock.json` 的 `files` 键 | 上游 repo-kit | 上游测试 + 下游 `update-repo-kit.ps1 -Check` 比哈希 | ❌ 改了即 `KIT LOCK: FAIL` |
+| 生成物 | `schema/taxonomy.json` 的 `generated_files` | 生成器 | `generate.py --check` | ❌ 手改会被覆盖或报过期 |
+| 仓自有配置 | `schema/taxonomy.json`、`.gitattributes` 等 | 下游 | `check_repo.py` | ✅ |
+| 仓自有内容 | `docs/**`、根 4 文件、脚本 | 下游 | `check_repo.py` + 仓自有 lint | ✅ |
+
+为什么要写死这张表：2026-11-19 在 `video-upscale-deploy` 撞到过一次——仓里要求「所有 `.ps1` 带 BOM」，
+而 `tools/update-repo-kit.ps1` 被 lock 按字节锁住，加 BOM 就 `KIT LOCK: FAIL`。
+**两条规则同时成立，规则就永远不可能绿**——这不是欠债，是作用域没划清。
+
+划清之后各管各的：kit 文件的编码由**上游**负责（上游测试自己的发行物），下游只校验自己写的文件。
+真要改 kit 文件的字节，只能改上游并在同一次提交里刷新锁，**不要在仓里就地改**——
+业界同类机制（pip 的 `tools/vendoring/patches/`、npm 的 `patchedDependencies`）都要求
+「改动显式记录 + 哈希进锁」，就地改的下场是下次安装被覆盖或 CI 直接红。
+
 规范版本单独标记：最新版本见 [`spec.json`](spec.json)，每个仓库通过 `schema/kit.lock.json` 的
 `spec_version` 声明自己按哪一版整理。任何程序读这一个字段即可判断版本。
 
@@ -74,6 +93,11 @@ GENERATE CHECK: PASS   # link-only 不适用
 KIT LOCK: PASS
 CI: PASS
 ```
+
+若仓里有**自有的机器检查**（如 `tools/check_text.py`、`pytest`、`guardrails lint-manual`），
+它同样是完成定义的一部分，而且**必须接进 CI**。
+只在 `AGENTS.md` 的「常用命令」里列着、实际没人跑的检查等于没有——2026-11-19 实测：
+`video-upscale-deploy` 的 BOM 检查红了半年，因为既不在 CI 里，也不在上面的四项里。
 
 机器层只保结构、链接、真源与新鲜度；语义真假仍靠人审。
 
