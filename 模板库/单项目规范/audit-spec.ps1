@@ -95,7 +95,9 @@ function Get-RepoFlags([string]$root) {
             # 剔除整行注释再匹配：注释里提到 --changed-since 不代表真的用了它。
             # 例：ai-dev-guardrails 的 repo-check.yml 用注释解释"为什么不用"，
             # 曾被裸字符串匹配命中，在舰队审计里长期误报 ci-no-fetch-depth。
-            $text = (Get-Content -LiteralPath $wf.FullName |
+            # -Encoding UTF8 不能省：PS 5.1 对无 BOM 的 UTF-8 默认按 ANSI 解码，
+            # 中文注释会被拆坏并吞掉换行，把下一行 run: 粘进注释里（实测 56 行→52 行）。
+            $text = (Get-Content -LiteralPath $wf.FullName -Encoding UTF8 |
                 Where-Object { $_ -notmatch '^\s*#' }) -join "`n"
             if ($text -match 'check_repo\.py') { $wired = $true }
             if ($text -match '--changed-since') { $changed = $true }
