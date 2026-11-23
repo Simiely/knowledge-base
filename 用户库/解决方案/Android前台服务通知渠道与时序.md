@@ -1,8 +1,8 @@
 ---
-tags: [android, notification, service]
+tags: [android, notification, service, lifecycle, oem]
 date: 2026-08-03
 status: stable
-related: [Android13通知权限运行时申请.md]
+related: [Android13通知权限运行时申请.md, 功能开关总闸不得复位常规能力.md]
 source: https://github.com/Simiely/DarkMask/blob/main/DEVELOPMENT.md
 ---
 # Android 前台服务通知不显示：渠道 id + 权限时序
@@ -37,6 +37,18 @@ val launcher = registerForActivityResult(RequestPermission()) { granted ->
 - 依赖通知权限的服务启动，一律在权限回调里做，别在 requestPermissions 后直接 startForegroundService
 - Android 13+ 通知相关功能发版前在真机验证（低版本测不出来）
 
+## 补充：服务被杀后的恢复（2026-11-23 复核）
+
+前台服务「能起来」和「一直活着」是两件事，通知渠道之外还要管这三条：
+
+- `onStartCommand` 返回 `START_STICKY`，让系统回收后重建服务；重建时会重走 `onCreate`，动态注册的接收器随之恢复
+- `ACTION_USER_PRESENT` **不在** Android 8.0 隐式广播豁免清单（豁免的是 `BOOT_COMPLETED` / `TIME_SET` / USB / 蓝牙等），只能在服务进程内动态注册；服务一死，解锁刷新就断
+- 部分 ROM（ColorOS / HyperOS / 小米）会限制 `START_STICKY` 重建：必须引导用户允许自启动、加入电池优化白名单、允许后台高耗电，并在最近任务里锁定卡片
+- 不要用短 `delay` 做后台定时：锁屏冻结进程时实测 `delay(2s)` 在 83 秒后才执行；改「解锁广播触发 + 通知栏手动刷新」
+
+与 [功能开关总闸不得复位常规能力](./功能开关总闸不得复位常规能力.md) 联读：总闸关闭时若顺手停掉前台服务，以上四条全部失效。
+
 ## 来源
 提炼自 [DarkMask](https://github.com/Simiely/DarkMask)：
-[DEVELOPMENT.md ①](https://github.com/Simiely/DarkMask/blob/main/DEVELOPMENT.md)（前台服务通知不显示）
+[DEVELOPMENT.md ①](https://github.com/Simiely/DarkMask/blob/main/DEVELOPMENT.md)（前台服务通知不显示）；
+2026-11-23 补自 [dashwidget](https://github.com/Simiely/dashwidget) v3.7/v3.8 的解锁刷新与保活修复。
